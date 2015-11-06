@@ -1,0 +1,42 @@
+<RelativeLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="@dimen/add_new_contact_layout_width"
+ android:layout_height="@dimen/add_new_contact_layout_height">
+
+    <!--TODO need resource -->
+    <ImageView
+        android:id="@+id/add_new_contact_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#cccccc"
+        android:scaleType="center" >
+    </ImageView>
+    
+    <ImageView
+        android:id="@+id/add_new_contact_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/add_new_contact_icon_mergin_left"
+        android:layout_marginTop="@dimen/add_new_contact_icon_mergin_top"
+        android:src="@drawable/add_new_contact"
+        android:longClickable="false"
+		android:clickable="false"
+        android:scaleType="center" >
+    </ImageView>
+    
+   <TextView
+        android:id="@+id/add_new_contact_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/add_new_contact_text_mergin_top"
+        android:layout_marginBottom="@dimen/add_new_contact_text_mergin_bottom"
+        android:gravity="center"
+        android:longClickable="false"
+		android:clickable="false"
+        android:text="@string/add_new_contact"
+        android:textColor="@color/black">
+        
+    </TextView>
+    
+
+</RelativeLayout>
