@@ -3,10 +3,6 @@ package com.example.zz_custom_circle.contact;
 import com.example.zz_custom_circle.R;
 
 import android.app.Activity;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
