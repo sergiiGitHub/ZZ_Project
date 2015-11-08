@@ -103,7 +103,10 @@ public class MainActivity extends Activity implements AnimationListener {
     }
 
 	private void updateContactItemByValue(String picturePath) {
-		addNewContact.onNewContactAdd("New Name", picturePath);
+		addNewContact.setNewContactAdd(
+				getResources().getString(R.string.new_name),
+				Color.WHITE,
+				picturePath);
 	}
     
 	private void updateContactItemByResource() {

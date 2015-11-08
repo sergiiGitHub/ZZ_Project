@@ -161,9 +161,9 @@ public class AddNewContact implements OnClickListener {
 		view.getImageBackground().setImageDrawable(null);
 	}
 
-	public void onNewContactAdd(String aString,  String aPicturePath) {
+	public void setNewContactAdd(String aString, int aColor, String aPicturePath) {
 		view.getText().setText( aString );
-		view.getText().setTextColor( Color.WHITE );
+		view.getText().setTextColor( aColor );
 		view.getText().setY( view.getImageBackground().getHeight() -
 				view.getText().getHeight() );
 		
