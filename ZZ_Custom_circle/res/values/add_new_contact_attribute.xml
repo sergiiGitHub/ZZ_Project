@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- just color or ather thing also -->
+    <attr name="CustomColorWhite" format="reference|color" />
+    <attr name="CustomColorBlack" format="reference|color" />
+    <attr name="CustomColorGray" format="reference|color" />
+</resources>

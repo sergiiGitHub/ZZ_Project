@@ -1,14 +1,17 @@
 package com.example.zz_custom_circle.contact;
 
-import com.example.zz_custom_circle.R;
+import java.io.InputStream;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ImageView;
 
 public class AddNewContact implements OnClickListener {
 
@@ -17,6 +20,8 @@ public class AddNewContact implements OnClickListener {
 	public static final int ON_CLICK_BEHAVIOR_NOTHING = 0;
 	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;	
 	
+	private final Resources resource;
+
 	private AddNewContactView view;
 	private AnimationHideController animationHideController;
 	
@@ -25,14 +30,14 @@ public class AddNewContact implements OnClickListener {
 	public int onClickReaction = ON_CLICK_BEHAVIOR_NOTHING;
 	
 	public AddNewContact(Activity aActivity) {
+		resource = aActivity.getResources();
 		initView( aActivity );
 		initAnimationController( aActivity );
 	}
 
 	private void initView(Activity aActivity) {
-		view = (AddNewContactView) aActivity.findViewById(R.id.add_new_contact_view);
-		view.initAnotherComponent( aActivity );
-		view.setOnClickListener( this );
+		view = new AddNewContactView( aActivity );
+		view.getImageBackground().setOnClickListener( this );
 	}
 	
 	private void initAnimationController(Activity aActivity) {
@@ -69,16 +74,26 @@ public class AddNewContact implements OnClickListener {
 		this.externalOnClickListener = externalOnClickListener;
 	}
 	
-	public void setContactImage(String aPath) {
-		setContactImage(BitmapFactory.decodeFile(aPath));
+	public void setContactImageBackground(String aPath) {
+		Log.d( TAG, "path = " + aPath );
+		setContactImageBackground(BitmapFactory.decodeFile(aPath));
 	}
 	
-	public void setContactImage(Bitmap aNewBitmap) {
-		view.getIcon().setImageBitmap(aNewBitmap);
+	public void setContactImageBackground(Bitmap aNewBitmap) {
+	    ImageView viewBg = view.getImageBackground();
+
+	    int width = viewBg.getWidth();
+	    int height = viewBg.getHeight();
+	    Log.d( TAG, "setContactImageBackground :: width = " + width + "; Height = " + height ); 
+
+	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(aNewBitmap, width, height, true);
+	    viewBg.setImageBitmap(scaledBitmap);
 	}
 	
-	public void setContactImage(int aResourceId) {
-		view.getIcon().setImageResource(aResourceId);
+	public void setContactImageBackground(int aResourceId) {
+	    final InputStream is = resource.openRawResource(aResourceId);
+	    final Bitmap originalBitmap = BitmapFactory.decodeStream(is);
+	    setContactImageBackground( originalBitmap ); 	
 	}
 
 	public void setContactName(String aNewName) {
@@ -97,6 +112,11 @@ public class AddNewContact implements OnClickListener {
 		view.getText().setTextColor(aResourceId);
 	}
 	
+	public void setTextVisibility(int aVisible) {
+		view.getText().setVisibility(aVisible);
+		view.getText().bringToFront();
+	}
+	
 	public void setInternalReactionOnClick( int aReaction ){
 		onClickReaction = aReaction;
 	}
@@ -112,6 +132,19 @@ public class AddNewContact implements OnClickListener {
 
 	public void setForegroundVisibility(int aVisible) {
 		view.setForegroundVisibility(aVisible);
+	}
+
+	public void setIconVisibility(int aVisible) {
+		view.getIcon().setVisibility(aVisible);
+	}
+
+	public void reset() {
+		Log.d(TAG, "reset");
+		setForegroundVisibility( View.VISIBLE );
+		setContactNameColor( Color.BLACK );
+		view.getImageBackground().setImageDrawable(null);
+		view.getImageBackground().setImageResource(0);
+		view.getImageBackground().invalidate();
 	}
 
 }

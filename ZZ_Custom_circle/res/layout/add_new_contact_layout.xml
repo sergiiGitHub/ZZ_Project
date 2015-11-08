@@ -2,14 +2,7 @@
     android:layout_width="@dimen/add_new_contact_layout_width"
     android:layout_height="@dimen/add_new_contact_layout_height" >
 
-    <com.example.zz_custom_circle.contact.AddNewContactView
-        android:id="@+id/add_new_contact_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.example.zz_custom_circle.contact.AddNewContactView>
-
-    <!-- TODO need resource -->
-
+    <!-- Need Background -->
     <ImageView
         android:id="@+id/add_new_contact_bg"
         android:layout_width="match_parent"

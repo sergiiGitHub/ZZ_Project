@@ -5,25 +5,20 @@ import com.example.zz_custom_circle.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AddNewContactView extends View implements IAddContactView {
+public class AddNewContactView implements IAddContactView {
 
 	private TextView textView;
 	private ImageView imageIcon;
+	private ImageView imageBackground;
 	
-	public AddNewContactView(Context context) {
-		super(context);
-	}
-	
-	public AddNewContactView(Context context , AttributeSet aAttribute) {
-		super(context, aAttribute);
-	}
-
-	public void initAnotherComponent(Activity aActivity) {
+	public AddNewContactView( Activity aActivity ) {
 		imageIcon = (ImageView) aActivity.findViewById(R.id.add_new_contact_icon);
+		imageBackground = (ImageView) aActivity.findViewById(R.id.add_new_contact_bg);
 		textView = (TextView) aActivity.findViewById(R.id.add_new_contact_text);
 	}
 
@@ -37,9 +32,14 @@ public class AddNewContactView extends View implements IAddContactView {
 		return imageIcon;
 	}
 
+	public ImageView getImageBackground() {
+		return imageBackground;
+	}
+	
 	@Override
 	public void setForegroundVisibility(int aVisibilty) {
 		getText().setVisibility(aVisibilty);
 		getIcon().setVisibility(aVisibilty);
 	}
+	
 }

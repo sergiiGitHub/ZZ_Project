@@ -3,6 +3,7 @@ package com.example.zz_custom_circle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,13 +26,11 @@ public class MainActivity extends Activity implements AnimationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		initAddNewContact();
-		
+
+		initAddNewContact();		
 		initButtonLoadImage();
+		initButtonReset();
 	}
-	
-	
 
 	private void initAddNewContact() {
 		addNewContact = new AddNewContact(this);
@@ -41,12 +40,21 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private void initButtonLoadImage() {
 
-        Button buttonLoadImage = (Button) this.findViewById(R.id.buttonLoadPicture);
+        Button buttonLoadImage = (Button) this.findViewById(R.id.button_load_picture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
             	addNewContact.cancelAnimation();
+            }
+        });
+	}
+	
+	private void initButtonReset() {
+        Button buttonLoadImage = (Button) this.findViewById(R.id.reset);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+            	addNewContact.reset();
             }
         });
 	}
@@ -63,7 +71,7 @@ public class MainActivity extends Activity implements AnimationListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        addNewContact.setForegroundVisibility( View.VISIBLE );
+        addNewContact.setTextVisibility( View.VISIBLE );
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -89,37 +97,42 @@ public class MainActivity extends Activity implements AnimationListener {
             	updateContactItemByValue( picturePath );
 //            	updateContactItemByResource();
             }
+        } else {
+        	addNewContact.setForegroundVisibility(View.VISIBLE);
         }
     }
 
 	private void updateContactItemByValue(String picturePath) {
 		addNewContact.setContactName("New Name");
-		addNewContact.setContactImage(picturePath);
+		addNewContact.setContactNameColor(Color.WHITE);
+		addNewContact.setContactImageBackground(picturePath);
 	}
     
 	private void updateContactItemByResource() {
 		addNewContact.setContactName(R.string.new_name);
 		addNewContact.setContactNameColorByResource( R.color.white );
-		addNewContact.setContactImage(R.drawable.ic_launcher);
+		addNewContact.setContactImageBackground(R.drawable.ic_launcher);
 	}
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
-		// TODO Auto-generated method stub
+		//TODO uncoment before commit.
 		loadImage();
+//		fixImpl();
+		
 		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
 	}
+
+
 
 	@Override
 	public void onAnimationRepeat(Animation animation) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onAnimationStart(Animation animation) {
 		// TODO Auto-generated method stub
-		
 	}    
 
 }
