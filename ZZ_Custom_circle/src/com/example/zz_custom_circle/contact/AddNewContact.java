@@ -1,13 +1,13 @@
 package com.example.zz_custom_circle.contact;
 
 import java.io.InputStream;
-
 import android.app.Activity;
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation.AnimationListener;
@@ -20,7 +20,7 @@ public class AddNewContact implements OnClickListener {
 	public static final int ON_CLICK_BEHAVIOR_NOTHING = 0;
 	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;	
 	
-	private final Resources resource;
+	private final Context context;
 
 	private AddNewContactView view;
 	private AnimationHideController animationHideController;
@@ -30,7 +30,7 @@ public class AddNewContact implements OnClickListener {
 	public int onClickReaction = ON_CLICK_BEHAVIOR_NOTHING;
 	
 	public AddNewContact(Activity aActivity) {
-		resource = aActivity.getResources();
+		context = aActivity;
 		initView( aActivity );
 		initAnimationController( aActivity );
 	}
@@ -91,7 +91,7 @@ public class AddNewContact implements OnClickListener {
 	}
 	
 	public void setContactImageBackground(int aResourceId) {
-	    final InputStream is = resource.openRawResource(aResourceId);
+	    final InputStream is = context.getResources().openRawResource(aResourceId);
 	    final Bitmap originalBitmap = BitmapFactory.decodeStream(is);
 	    setContactImageBackground( originalBitmap ); 	
 	}
@@ -110,6 +110,12 @@ public class AddNewContact implements OnClickListener {
 
 	public void setContactNameColorByResource(int aResourceId) {
 		view.getText().setTextColor(aResourceId);
+	}
+	
+	public void setContactNameColorByAttribute(int aResourceAttr, TypedValue aTypedValue) {
+		if (context.getTheme().resolveAttribute(aResourceAttr, aTypedValue, true)) {
+			view.getText().setTextColor(aTypedValue.data);
+		}
 	}
 	
 	public void setTextVisibility(int aVisible) {
