@@ -95,10 +95,11 @@ public class MainActivity extends Activity implements AnimationListener {
 
             if ( picturePath != null ){
             	updateContactItemByValue( picturePath );
-//            	updateContactItemByResource();
             }
         } else {
-        	addNewContact.setForegroundVisibility(View.VISIBLE);
+//        	addNewContact.setForegroundVisibility(View.VISIBLE);
+//        	addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
+        	addNewContact.reset();
         }
     }
 
@@ -117,9 +118,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
-		//TODO uncoment before commit.
 		loadImage();
-//		fixImpl();
 //		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
 	}
 

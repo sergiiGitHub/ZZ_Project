@@ -149,11 +149,13 @@ public class AddNewContact implements OnClickListener {
 
 	public void reset() {
 		Log.d(TAG, "reset");
+		
+		//TODO improve
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_HIDE);
 		setForegroundVisibility( View.VISIBLE );
 		setContactNameColor( Color.BLACK );
 		float merginBotom = context.getResources().getDimension(
 				R.dimen.add_new_contact_text_mergin_bottom );
-		Log.d(TAG, "reset :: merginBotom = " + merginBotom);
 		view.getText().setY( view.getImageBackground().getHeight() - 
 				( view.getText().getHeight() + merginBotom ) );
 
