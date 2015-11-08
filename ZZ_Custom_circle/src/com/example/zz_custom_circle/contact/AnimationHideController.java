@@ -13,7 +13,6 @@ public class AnimationHideController implements AnimationListener {
 	
 	private static final String TAG = AnimationHideController.class.getSimpleName();
 
-
 	private Animation iconAnimationHide;
 	private Animation opacityAnimationHide;
 	

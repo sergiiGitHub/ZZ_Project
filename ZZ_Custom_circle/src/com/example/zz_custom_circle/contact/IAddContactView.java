@@ -8,5 +8,4 @@ public interface IAddContactView {
 	ImageView getIcon();
 
 	void setForegroundVisibility( int aVisibilty );
-	void setBackgroundVisibility( int aVisibilty );
 }

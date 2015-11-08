@@ -1,9 +1,10 @@
 package com.example.zz_custom_circle.contact;
 
+import com.example.zz_custom_circle.R;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,8 +30,9 @@ public class AddNewContact implements OnClickListener {
 	}
 
 	private void initView(Activity aActivity) {
-		view = new AddNewContactView(aActivity);
-		view.setOnClicListener( this );
+		view = (AddNewContactView) aActivity.findViewById(R.id.add_new_contact_view);
+		view.initAnotherComponent( aActivity );
+		view.setOnClickListener( this );
 	}
 	
 	private void initAnimationController(Activity aActivity) {
@@ -111,10 +113,6 @@ public class AddNewContact implements OnClickListener {
 	public void setForegroundVisibility(int aVisible) {
 		view.setForegroundVisibility(aVisible);
 	}
-	
-	public void setBackgroudVisibility(int aVisible) {
-		view.setBackgroundVisibility(aVisible);
-	}
-	
+
 }
 

@@ -3,7 +3,6 @@ package com.example.zz_custom_circle;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.example.zz_custom_circle.contact.AddNewContact;
 
@@ -32,6 +30,8 @@ public class MainActivity extends Activity implements AnimationListener {
 		
 		initButtonLoadImage();
 	}
+	
+	
 
 	private void initAddNewContact() {
 		addNewContact = new AddNewContact(this);

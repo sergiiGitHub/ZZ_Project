@@ -3,28 +3,28 @@ package com.example.zz_custom_circle.contact;
 import com.example.zz_custom_circle.R;
 
 import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AddNewContactView implements IAddContactView {
+public class AddNewContactView extends View implements IAddContactView {
+
 	private TextView textView;
 	private ImageView imageIcon;
-	private ImageView imageBackground;
 	
-	public AddNewContactView( Activity aActivity ){
-		initViewComponent(aActivity);	
+	public AddNewContactView(Context context) {
+		super(context);
+	}
+	
+	public AddNewContactView(Context context , AttributeSet aAttribute) {
+		super(context, aAttribute);
 	}
 
-	private void initViewComponent(Activity aActivity) {
+	public void initAnotherComponent(Activity aActivity) {
 		imageIcon = (ImageView) aActivity.findViewById(R.id.add_new_contact_icon);
-		imageBackground = (ImageView) aActivity.findViewById(R.id.add_new_contact_bg);
 		textView = (TextView) aActivity.findViewById(R.id.add_new_contact_text);
-	}
-
-	public void setOnClicListener(OnClickListener aClickListener) {
-		imageBackground.setOnClickListener(aClickListener);
 	}
 
 	@Override
@@ -42,10 +42,4 @@ public class AddNewContactView implements IAddContactView {
 		getText().setVisibility(aVisibilty);
 		getIcon().setVisibility(aVisibilty);
 	}
-
-	@Override
-	public void setBackgroundVisibility(int aVisibilty) {
-		imageBackground.setVisibility(aVisibilty);
-	}
-
 }
