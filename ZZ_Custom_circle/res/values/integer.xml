@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="ADD_NEW_CONTACT_ANIMATION_DURATION">1000</integer>
-    <integer name="ADD_NEW_CONTACT_ICON_ANIMATION_OPACITY_DURATION">500</integer>
-    <integer name="ADD_NEW_CONTACT_ICON_ANIMATION_OPACITY_DELAY">500</integer>
+    <integer name="ADD_NEW_CONTACT_ANIMATION_DURATION">2000</integer>
+    <integer name="ADD_NEW_CONTACT_ICON_ANIMATION_OPACITY_DURATION">1000</integer>
+    <integer name="ADD_NEW_CONTACT_ICON_ANIMATION_OPACITY_DELAY">1000</integer>
 </resources>

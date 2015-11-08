@@ -1,12 +1,10 @@
 package com.example.zz_custom_circle.contact;
 
 import com.example.zz_custom_circle.R;
-import com.example.zz_custom_circle.contact.AnimationController.IAddContactView;
 
 import android.app.Activity;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +35,17 @@ public class AddNewContactView implements IAddContactView {
 	@Override
 	public ImageView getIcon() {
 		return imageIcon;
+	}
+
+	@Override
+	public void setForegroundVisibility(int aVisibilty) {
+		getText().setVisibility(aVisibilty);
+		getIcon().setVisibility(aVisibilty);
+	}
+
+	@Override
+	public void setBackgroundVisibility(int aVisibilty) {
+		imageBackground.setVisibility(aVisibilty);
 	}
 
 }

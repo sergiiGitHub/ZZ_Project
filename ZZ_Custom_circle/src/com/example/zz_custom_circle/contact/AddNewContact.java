@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation.AnimationListener;
 
 public class AddNewContact implements OnClickListener {
 
@@ -16,7 +17,7 @@ public class AddNewContact implements OnClickListener {
 	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;	
 	
 	private AddNewContactView view;
-	private AnimationController controller;
+	private AnimationHideController animationHideController;
 	
 	private OnClickListener externalOnClickListener;
 	
@@ -33,14 +34,15 @@ public class AddNewContact implements OnClickListener {
 	}
 	
 	private void initAnimationController(Activity aActivity) {
-		controller = new AnimationController(aActivity);
-		controller.setAddContactView(view);
+		animationHideController = new AnimationHideController(aActivity);
+		animationHideController.setAddContactView(view);
 	}
 
 	private void internalReaction() {
 		switch (onClickReaction) {
 		case ON_CLICK_BEHAVIOR_HIDE:
-			controller.startHideAnimation();
+			setInternalReactionOnClick(ON_CLICK_BEHAVIOR_NOTHING);
+			animationHideController.startHideAnimation();
 			break;
 		default:
 			break;
@@ -97,7 +99,22 @@ public class AddNewContact implements OnClickListener {
 		onClickReaction = aReaction;
 	}
 
+	public void setExternalAnimationListener(AnimationListener externalAnimationListener) {
+		animationHideController.setExternalAnimationListener(externalAnimationListener);
+	}
+	
+	public void cancelAnimation(){
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_HIDE);
+		animationHideController.cancel( );
+	}
 
+	public void setForegroundVisibility(int aVisible) {
+		view.setForegroundVisibility(aVisible);
+	}
+	
+	public void setBackgroudVisibility(int aVisible) {
+		view.setBackgroundVisibility(aVisible);
+	}
 	
 }
 

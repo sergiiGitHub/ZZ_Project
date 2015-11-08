@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.zz_custom_circle.contact.AddNewContact;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements AnimationListener {
 
 	private static final int RESULT_LOAD_IMAGE = 1;
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -26,10 +28,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		addNewContact = new AddNewContact(this);
-		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
+		initAddNewContact();
 		
 		initButtonLoadImage();
+	}
+
+	private void initAddNewContact() {
+		addNewContact = new AddNewContact(this);
+		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
+		addNewContact.setExternalAnimationListener(this);
 	}
 
 	private void initButtonLoadImage() {
@@ -39,20 +46,24 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            	addNewContact.cancelAnimation();
             }
         });
+	}
+	
+	private void loadImage() {
+        Intent i = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(i, RESULT_LOAD_IMAGE);
 	}
 	
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        addNewContact.setForegroundVisibility( View.VISIBLE );
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -90,6 +101,25 @@ public class MainActivity extends Activity {
 		addNewContact.setContactName(R.string.new_name);
 		addNewContact.setContactNameColorByResource( R.color.white );
 		addNewContact.setContactImage(R.drawable.ic_launcher);
+	}
+
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		// TODO Auto-generated method stub
+		loadImage();
+		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
 	}    
 
 }

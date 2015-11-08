@@ -8,8 +8,9 @@
     <dimen name="add_new_contact_layout_width">116dp</dimen>
     <dimen name="add_new_contact_layout_height">182dp</dimen>
 
+    <dimen name="add_new_contact_icon_size">80dp</dimen>
     <dimen name="add_new_contact_icon_mergin_top">50dp</dimen>
-    <dimen name="add_new_contact_icon_mergin_left">34dp</dimen>
+    <dimen name="add_new_contact_icon_mergin_left">18dp</dimen>
 
     <dimen name="add_new_contact_text_mergin_top">140dp</dimen>
     <dimen name="add_new_contact_text_mergin_bottom">23dp</dimen>  
