@@ -103,9 +103,7 @@ public class MainActivity extends Activity implements AnimationListener {
     }
 
 	private void updateContactItemByValue(String picturePath) {
-		addNewContact.setContactName("New Name");
-		addNewContact.setContactNameColor(Color.WHITE);
-		addNewContact.setContactImageBackground(picturePath);
+		addNewContact.onNewContactAdd("New Name", picturePath);
 	}
     
 	private void updateContactItemByResource() {
@@ -119,11 +117,8 @@ public class MainActivity extends Activity implements AnimationListener {
 		//TODO uncoment before commit.
 		loadImage();
 //		fixImpl();
-		
-		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
+//		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
 	}
-
-
 
 	@Override
 	public void onAnimationRepeat(Animation animation) {

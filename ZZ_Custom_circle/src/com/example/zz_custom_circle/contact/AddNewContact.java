@@ -1,6 +1,9 @@
 package com.example.zz_custom_circle.contact;
 
 import java.io.InputStream;
+
+import com.example.zz_custom_circle.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -148,9 +151,23 @@ public class AddNewContact implements OnClickListener {
 		Log.d(TAG, "reset");
 		setForegroundVisibility( View.VISIBLE );
 		setContactNameColor( Color.BLACK );
+		float merginBotom = context.getResources().getDimension(
+				R.dimen.add_new_contact_text_mergin_bottom );
+		Log.d(TAG, "reset :: merginBotom = " + merginBotom);
+		view.getText().setY( view.getImageBackground().getHeight() - 
+				( view.getText().getHeight() + merginBotom ) );
+
+		setContactName(R.string.add_new_contact);
 		view.getImageBackground().setImageDrawable(null);
-		view.getImageBackground().setImageResource(0);
-		view.getImageBackground().invalidate();
+	}
+
+	public void onNewContactAdd(String aString,  String aPicturePath) {
+		view.getText().setText( aString );
+		view.getText().setTextColor( Color.WHITE );
+		view.getText().setY( view.getImageBackground().getHeight() -
+				view.getText().getHeight() );
+		
+		setContactImageBackground( aPicturePath );
 	}
 
 }
