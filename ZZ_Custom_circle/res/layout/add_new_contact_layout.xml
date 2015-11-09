@@ -3,6 +3,7 @@
     android:layout_height="@dimen/add_new_contact_layout_height" >
 
     <!-- Need Background -->
+
     <ImageView
         android:id="@+id/add_new_contact_bg"
         android:layout_width="match_parent"
@@ -22,6 +23,22 @@
         android:scaleType="fitXY"
         android:src="@drawable/add_new_contact" >
     </ImageView>
+
+    <TextView
+        android:id="@+id/add_new_contact_hold_to_records"
+        android:layout_width="@dimen/add_new_contact_icon_size"
+        android:layout_height="@dimen/add_new_contact_icon_size"
+        android:layout_marginLeft="@dimen/add_new_contact_icon_mergin_left"
+        android:layout_marginTop="@dimen/add_new_contact_icon_mergin_top"
+        android:clickable="false"
+        android:longClickable="false"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:text="@string/hold_to_records"
+        android:visibility="invisible">
+    </TextView>
 
     <TextView
         android:id="@+id/add_new_contact_text"

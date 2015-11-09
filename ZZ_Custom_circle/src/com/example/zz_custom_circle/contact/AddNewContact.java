@@ -3,6 +3,10 @@ package com.example.zz_custom_circle.contact;
 import java.io.InputStream;
 
 import com.example.zz_custom_circle.R;
+import com.example.zz_custom_circle.contact.animcontroller.AnimationHideController;
+import com.example.zz_custom_circle.contact.animcontroller.AnimationNoActionController;
+import com.example.zz_custom_circle.contact.animcontroller.AnimationShowController;
+import com.example.zz_custom_circle.contact.animcontroller.IAnimationController;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,15 +23,18 @@ import android.widget.ImageView;
 public class AddNewContact implements OnClickListener {
 
 	private static final String TAG = AddNewContact.class.getSimpleName(); 
-	
+
+	private static final int ON_CLICK_BEHAVIOR_SIZE = 3;
 	public static final int ON_CLICK_BEHAVIOR_NOTHING = 0;
-	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;	
+	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;
+	public static final int ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION = 2;
+	
+	private IAnimationController arrayController[] = new IAnimationController[ON_CLICK_BEHAVIOR_SIZE]; 
 	
 	private final Context context;
 
 	private AddNewContactView view;
-	private AnimationHideController animationHideController;
-	
+
 	private OnClickListener externalOnClickListener;
 	
 	public int onClickReaction = ON_CLICK_BEHAVIOR_NOTHING;
@@ -44,31 +51,30 @@ public class AddNewContact implements OnClickListener {
 	}
 	
 	private void initAnimationController(Activity aActivity) {
-		animationHideController = new AnimationHideController(aActivity);
-		animationHideController.setAddContactView(view);
-	}
+		arrayController[ON_CLICK_BEHAVIOR_NOTHING] = new AnimationNoActionController();
+		arrayController[ON_CLICK_BEHAVIOR_HIDE] = new AnimationHideController(aActivity);
+		arrayController[ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION] = new AnimationShowController(aActivity);
 
-	private void internalReaction() {
-		switch (onClickReaction) {
-		case ON_CLICK_BEHAVIOR_HIDE:
-			setInternalReactionOnClick(ON_CLICK_BEHAVIOR_NOTHING);
-			animationHideController.startHideAnimation();
-			break;
-		default:
-			break;
+		for ( IAnimationController item : arrayController ){
+			item.setAddContactView(view);
 		}
 	}
 
 	@Override
 	public void onClick(View aView) {
 		Log.d( TAG, "onClick" );
-		internalReaction();
+		arrayController[getInternalReactionOnClick()].start();
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_NOTHING);
 		
 		if ( getExternalOnClickListener() != null ){
 			getExternalOnClickListener().onClick(aView);
 		}
 	}
 	
+	private int getInternalReactionOnClick() {
+		return onClickReaction;
+	}
+
 	public OnClickListener getExternalOnClickListener() {
 		return externalOnClickListener;
 	}
@@ -131,12 +137,14 @@ public class AddNewContact implements OnClickListener {
 	}
 
 	public void setExternalAnimationListener(AnimationListener externalAnimationListener) {
-		animationHideController.setExternalAnimationListener(externalAnimationListener);
+		for ( IAnimationController item : arrayController ){
+			item.setExternalAnimationListener(externalAnimationListener);
+		}
 	}
 	
 	public void cancelAnimation(){
-		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_HIDE);
-		animationHideController.cancel( );
+		arrayController[getInternalReactionOnClick()].cancel();
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION);
 	}
 
 	public void setForegroundVisibility(int aVisible) {
@@ -149,11 +157,11 @@ public class AddNewContact implements OnClickListener {
 
 	public void reset() {
 		Log.d(TAG, "reset");
-		
-		//TODO improve
-		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_HIDE);
+
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION);
 		setForegroundVisibility( View.VISIBLE );
 		setContactNameColor( Color.BLACK );
+		//TODO improve move to view part
 		float merginBotom = context.getResources().getDimension(
 				R.dimen.add_new_contact_text_mergin_bottom );
 		view.getText().setY( view.getImageBackground().getHeight() - 

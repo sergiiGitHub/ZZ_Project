@@ -1,6 +1,7 @@
-package com.example.zz_custom_circle.contact;
+package com.example.zz_custom_circle.contact.animcontroller;
 
 import com.example.zz_custom_circle.R;
+import com.example.zz_custom_circle.contact.IAddContactView;
 
 import android.app.Activity;
 import android.util.Log;
@@ -9,7 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
-public class AnimationHideController implements AnimationListener {
+public class AnimationHideController implements AnimationListener
+,IAnimationController{
 	
 	private static final String TAG = AnimationHideController.class.getSimpleName();
 
@@ -32,7 +34,8 @@ public class AnimationHideController implements AnimationListener {
 		opacityAnimationHide.setAnimationListener(this);
 	}
 
-	public void startHideAnimation() {
+	@Override
+	public void start() {
 		
 		if ( getAddContactView() == null ){
 			return;
@@ -91,10 +94,12 @@ public class AnimationHideController implements AnimationListener {
 		return externalAnimationListener;
 	}
 
+	@Override
 	public void setExternalAnimationListener(AnimationListener externalAnimationListener) {
 		this.externalAnimationListener = externalAnimationListener;
 	}
 
+	@Override
 	public void cancel() {
 		
 		setIsCancel( true );

@@ -28,17 +28,18 @@ public class MainActivity extends Activity implements AnimationListener {
 		setContentView(R.layout.activity_main);
 
 		initAddNewContact();		
-		initButtonLoadImage();
+		initButtonCancel();
 		initButtonReset();
 	}
 
 	private void initAddNewContact() {
 		addNewContact = new AddNewContact(this);
-		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
-		addNewContact.setExternalAnimationListener(this);
+		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION);
+		//for hide animation
+//		addNewContact.setExternalAnimationListener(this);
 	}
 
-	private void initButtonLoadImage() {
+	private void initButtonCancel() {
 
         Button buttonLoadImage = (Button) this.findViewById(R.id.button_load_picture);
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
@@ -97,8 +98,6 @@ public class MainActivity extends Activity implements AnimationListener {
             	updateContactItemByValue( picturePath );
             }
         } else {
-//        	addNewContact.setForegroundVisibility(View.VISIBLE);
-//        	addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_HIDE);
         	addNewContact.reset();
         }
     }

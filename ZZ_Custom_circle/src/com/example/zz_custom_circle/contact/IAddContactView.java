@@ -5,7 +5,9 @@ import android.widget.TextView;
 
 public interface IAddContactView {
 	TextView getText();
+	TextView getTextHoldOn();
 	ImageView getIcon();
 
 	void setForegroundVisibility( int aVisibilty );
+	
 }
