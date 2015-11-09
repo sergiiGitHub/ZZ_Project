@@ -64,7 +64,6 @@ public class AddNewContact implements OnClickListener {
 	public void onClick(View aView) {
 		Log.d( TAG, "onClick" );
 		arrayController[getInternalReactionOnClick()].start();
-		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_NOTHING);
 		
 		if ( getExternalOnClickListener() != null ){
 			getExternalOnClickListener().onClick(aView);
