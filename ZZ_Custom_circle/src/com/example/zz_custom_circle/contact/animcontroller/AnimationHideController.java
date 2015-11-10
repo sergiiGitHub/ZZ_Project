@@ -86,7 +86,7 @@ public class AnimationHideController implements AnimationListener
 
 	@Override
 	public void onAnimationStart(Animation arg0) {
-		Log.d( TAG, "onAnimationEnd" );
+		Log.d( TAG, "onAnimationStart" );
 		if ( getExternalAnimationListener() != null ){
 			getExternalAnimationListener().onAnimationStart(arg0);
 		}

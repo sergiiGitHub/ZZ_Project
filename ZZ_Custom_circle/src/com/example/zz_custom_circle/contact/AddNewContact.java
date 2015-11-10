@@ -5,8 +5,7 @@ import java.io.InputStream;
 import com.example.zz_custom_circle.R;
 import com.example.zz_custom_circle.contact.animcontroller.AnimationHideController;
 import com.example.zz_custom_circle.contact.animcontroller.AnimationNoActionController;
-import com.example.zz_custom_circle.contact.animcontroller.AnimationFlipFlopController;
-import com.example.zz_custom_circle.contact.animcontroller.AnimationSplashController;
+import com.example.zz_custom_circle.contact.animcontroller.AnimationShowController;
 import com.example.zz_custom_circle.contact.animcontroller.IAnimationController;
 
 import android.app.Activity;
@@ -25,11 +24,10 @@ public class AddNewContact implements OnClickListener {
 
 	private static final String TAG = AddNewContact.class.getSimpleName(); 
 
-	private static final int ON_CLICK_BEHAVIOR_SIZE = 4;
+	private static final int ON_CLICK_BEHAVIOR_SIZE = 3;
 	public static final int ON_CLICK_BEHAVIOR_NOTHING = 0;
 	public static final int ON_CLICK_BEHAVIOR_HIDE = 1;
-	public static final int ON_CLICK_BEHAVIOR_SPLASH = 2;
-	public static final int ON_CLICK_BEHAVIOR_FLIP_FLOAP_ANIMATION = 3;
+	public static final int ON_CLICK_BEHAVIOR_SHOW = 2;
 	
 	private IAnimationController arrayController[]
 			= new IAnimationController[ON_CLICK_BEHAVIOR_SIZE]; 
@@ -57,8 +55,7 @@ public class AddNewContact implements OnClickListener {
 	private void initAnimationController(Activity aActivity) {
 		arrayController[ON_CLICK_BEHAVIOR_NOTHING] = new AnimationNoActionController();
 		arrayController[ON_CLICK_BEHAVIOR_HIDE] = new AnimationHideController(aActivity);
-		arrayController[ON_CLICK_BEHAVIOR_SPLASH] = new AnimationSplashController(aActivity);
-		arrayController[ON_CLICK_BEHAVIOR_FLIP_FLOAP_ANIMATION] = new AnimationFlipFlopController(aActivity);
+		arrayController[ON_CLICK_BEHAVIOR_SHOW] = new AnimationShowController(aActivity);
 
 		for ( IAnimationController item : arrayController ){
 			item.setAddContactView(view);
@@ -148,7 +145,7 @@ public class AddNewContact implements OnClickListener {
 	
 	public void cancelAnimation(){
 		arrayController[getInternalReactionOnClick()].cancel();
-		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SPLASH);
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SHOW);
 	}
 
 	public void setForegroundVisibility(int aVisible) {
@@ -162,7 +159,7 @@ public class AddNewContact implements OnClickListener {
 	public void reset() {
 		Log.d(TAG, "reset");
 
-		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SPLASH);
+		setInternalReactionOnClick(ON_CLICK_BEHAVIOR_SHOW);
 		setForegroundVisibility( View.VISIBLE );
 		setContactNameColor( Color.BLACK );
 		//TODO improve move to view part

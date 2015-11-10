@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 
 public class AnimationShowController implements AnimatorListener, IAnimationController {
@@ -33,8 +35,7 @@ public class AnimationShowController implements AnimatorListener, IAnimationCont
 	private Runnable runnableFLipInFlipOut;
 	private boolean isFirstTime;
 	private boolean isAnimationFinish = true;
-
-
+	private Animation animationSplash;
 
 	public AnimationShowController(Activity aActivity){
 		handler = new Handler();
@@ -55,10 +56,33 @@ public class AnimationShowController implements AnimatorListener, IAnimationCont
 	}
 
 	private void initAnimation(Activity aActivity) {
-		flipIn = AnimatorInflater.loadAnimator(aActivity, R.animator.add_new_contact_flip_left_in);
-		flipInCancel = AnimatorInflater.loadAnimator(aActivity, R.animator.add_new_contact_flip_left_in_cencel);
+		flipIn = AnimatorInflater.loadAnimator(aActivity, 
+				R.animator.add_new_contact_flip_left_in);
+		flipInCancel = AnimatorInflater.loadAnimator(aActivity, 
+				R.animator.add_new_contact_flip_left_in_cencel);
 		flipIn.addListener(this);
-		flipOut = AnimatorInflater.loadAnimator(aActivity, R.animator.add_new_contact_flip_left_out);
+		flipOut = AnimatorInflater.loadAnimator(aActivity, 
+				R.animator.add_new_contact_flip_left_out);
+		
+		initSplashAnimation(aActivity);
+	}
+
+	private void initSplashAnimation(Activity aActivity) {
+		animationSplash = AnimationUtils.loadAnimation(aActivity,
+				R.anim.anim_add_new_contact_splash );
+		animationSplash.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {	}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				getAddContactView().getSplashView().setVisibility(View.INVISIBLE);
+			}
+		});
 	}
 
 	@Override
@@ -69,16 +93,23 @@ public class AnimationShowController implements AnimatorListener, IAnimationCont
 		
 		if( !isAnimationFinish  ){
 			cancel();
+			setIsCancel(false);
 			return;
 		}
-		
+
 		isAnimationFinish = false;
-		
+	
 		isFirstTime = true;
 		//TODO use camera here
 		getAddContactView().getIcon().setImageResource(R.drawable.add_new_contact_stemp);
-//		handler.postDelayed(runnableFLipInFlipOut, DELAY_FOR_FLIP_START);
-		startAnimationInternal();
+		handler.postDelayed(runnableFLipInFlipOut, DELAY_FOR_FLIP_START);
+//		startAnimationInternal();
+		startSplashAnimation();
+	}
+
+	private void startSplashAnimation() {
+		getAddContactView().getSplashView().setVisibility(View.VISIBLE);
+		getAddContactView().getSplashView().startAnimation( animationSplash );
 	}
 
 	private void startAnimationInternal() {
@@ -140,8 +171,11 @@ public class AnimationShowController implements AnimatorListener, IAnimationCont
 		isAnimationFinish = true;
 		flipIn.cancel();
 		flipOut.cancel();
+		getAddContactView().getSplashView().clearAnimation();
 		resetInitialPosition();
 		getAddContactView().getTextHoldOn().setVisibility(View.INVISIBLE);
+		
+		
 	}
 
 	private void resetInitialPosition() {
