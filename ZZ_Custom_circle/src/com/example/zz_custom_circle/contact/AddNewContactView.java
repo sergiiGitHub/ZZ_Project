@@ -12,6 +12,7 @@ public class AddNewContactView implements IAddContactView {
 	private TextView textViewHoldOn;
 	private ImageView imageIcon;
 	private ImageView imageBackground;
+	private ImageView imageSplash;
 	
 	public AddNewContactView( Activity aActivity ) {
 		initView(aActivity);
@@ -22,6 +23,9 @@ public class AddNewContactView implements IAddContactView {
 		imageBackground = (ImageView) aActivity.findViewById(R.id.add_new_contact_bg);
 		textView = (TextView) aActivity.findViewById(R.id.add_new_contact_text);
 		textViewHoldOn = (TextView) aActivity.findViewById(R.id.add_new_contact_hold_to_records);
+		
+		imageSplash = (ImageView) aActivity.findViewById(R.id.id_add_new_contact_splash);
+		imageSplash.setImageResource(R.drawable.add_new_contact_splash);
 	}
 
 	@Override
@@ -49,6 +53,11 @@ public class AddNewContactView implements IAddContactView {
 	@Override
 	public TextView getTextHoldOn() {
 		return textViewHoldOn;
+	}
+
+	@Override
+	public ImageView getSplashView() {
+		return imageSplash;
 	}
 	
 }

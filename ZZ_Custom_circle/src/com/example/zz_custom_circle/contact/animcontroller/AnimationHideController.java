@@ -29,8 +29,10 @@ public class AnimationHideController implements AnimationListener
 	}
 	
 	private void initAnimation(Activity aActivity) {
-		iconAnimationHide = AnimationUtils.loadAnimation(aActivity, R.anim.add_new_contact_icon_hide_scale );
-		opacityAnimationHide = AnimationUtils.loadAnimation(aActivity, R.anim.add_new_contact_text_hide_opacity );
+		iconAnimationHide = AnimationUtils.loadAnimation(aActivity,
+				R.anim.add_new_contact_icon_hide_scale );
+		opacityAnimationHide = AnimationUtils.loadAnimation(aActivity,
+				R.anim.add_new_contact_text_hide_opacity );
 		opacityAnimationHide.setAnimationListener(this);
 	}
 

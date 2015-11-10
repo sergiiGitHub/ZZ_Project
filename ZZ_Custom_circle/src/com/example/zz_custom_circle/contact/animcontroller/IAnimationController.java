@@ -8,6 +8,9 @@ public interface IAnimationController  {
 	void cancel();
 	void start();
 	
+	IAddContactView getAddContactView();
 	void setAddContactView( IAddContactView aAddContactView );
+
+	AnimationListener getExternalAnimationListener();
 	void setExternalAnimationListener(AnimationListener externalAnimationListener);
 }

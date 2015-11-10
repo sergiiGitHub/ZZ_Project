@@ -2,8 +2,7 @@
     android:layout_width="@dimen/add_new_contact_layout_width"
     android:layout_height="@dimen/add_new_contact_layout_height" >
 
-    <!-- Need Background -->
-
+    <!-- Need Background from 11.10 -->
     <ImageView
         android:id="@+id/add_new_contact_bg"
         android:layout_width="match_parent"
@@ -24,6 +23,17 @@
         android:src="@drawable/add_new_contact" >
     </ImageView>
 
+    <ImageView
+        android:id="@+id/id_add_new_contact_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:longClickable="false"
+        android:gravity="center"
+        android:background="@color/half_white"
+        android:visibility="invisible">
+    </ImageView>
+    
     <TextView
         android:id="@+id/add_new_contact_hold_to_records"
         android:layout_width="@dimen/add_new_contact_icon_size"

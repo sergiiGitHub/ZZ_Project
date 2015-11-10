@@ -25,7 +25,20 @@ public class AnimationNoActionController implements IAnimationController {
 	public void setExternalAnimationListener(
 			AnimationListener externalAnimationListener) {
 		// TODO Auto-generated method stub
-		
 	}
+	
+	@Override
+	public AnimationListener getExternalAnimationListener() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IAddContactView getAddContactView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

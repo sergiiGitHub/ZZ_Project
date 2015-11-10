@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private void initAddNewContact() {
 		addNewContact = new AddNewContact(this);
-		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_SHOW_HOLD_ON_ANIMATION);
+		addNewContact.setInternalReactionOnClick(AddNewContact.ON_CLICK_BEHAVIOR_SPLASH);
 		//for hide animation
 //		addNewContact.setExternalAnimationListener(this);
 	}
