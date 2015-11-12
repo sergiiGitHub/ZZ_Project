@@ -1,6 +1,9 @@
 <resources>
     <declare-styleable name="RotationCircleView">
         <attr name="rcv_animDuration" format="integer" />
-        <attr name="rcv_icon" format="reference" />
+        <attr name="rcv_icon" format="integer" />
+        <attr name="rcv_bg_color" format="color" />
+        <attr name="rcv_bg_ring_color" format="color" />
+        <attr name="rcv_bg_ring_thickness" format="dimension" />
     </declare-styleable>
 </resources>

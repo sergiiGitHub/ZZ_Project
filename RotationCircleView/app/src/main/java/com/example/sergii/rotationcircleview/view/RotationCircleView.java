@@ -5,76 +5,82 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
+import android.util.TypedValue;
+import android.widget.RelativeLayout;
 
 import com.example.sergii.rotationcircleview.R;
 
 /**
  * Created by sergii on 11.11.15.
  */
-public class RotationCircleView extends View {
+public class RotationCircleView extends RelativeLayout {
 
     private static final String TAG = RotationCircleView.class.getSimpleName();
+    private static final Object BG_COLOR = 0;
 
     private AnimationController animationController;
     private Bitmap bitmap;
+    private RotationCircleViewBackground background;
 
     public RotationCircleView(Context context) {
         super(context);
+        init(null, 0);
     }
 
     public RotationCircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initAnimationController();
-        initAttributes(attrs, 0);
+        init( attrs, 0);
     }
 
     public RotationCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initAttributes(attrs, 0);
+        init( attrs, defStyleAttr);
     }
 
-    private void initAnimationController() {
+    private void init(AttributeSet attrs, int defStyleAttr) {
         setAnimationController(new AnimationController());
+        initAttributes(attrs, defStyleAttr);
+        addView(background);
+    }
+
+    private void createBackground( int aColor, int aRingColor, int aRingThickness ) {
+        background = new RotationCircleViewBackground( getContext(), aColor, aRingColor, aRingThickness );
+        background.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 
     private void initAttributes(AttributeSet attrs, int defStyle) {
-        final TypedArray a = getContext().obtainStyledAttributes(
+        final TypedArray typedArray = getContext().obtainStyledAttributes(
                 attrs, R.styleable.RotationCircleView, defStyle, 0);
 
         Resources resources = getResources();
 
-        getAnimationController().setAnimDuration(a.getInteger(
+        getAnimationController().setAnimDuration(typedArray.getInteger(
                 R.styleable.RotationCircleView_rcv_animDuration,
-                resources.getInteger(R.integer.rcv_animDuration)));
+                resources.getInteger(R.integer.rcv_default_animDuration)));
 
         setBitmap(BitmapFactory.decodeResource(
                 getContext().getResources(), R.styleable.RotationCircleView_rcv_icon));
 
+        //bg
+        int bgColor = typedArray.getColor( R.styleable.RotationCircleView_rcv_bg_color,
+                resources.getColor(R.color.rcv_default_bg_color));
 
-        //setBackground(a.getDrawable(R.styleable.RotationCircleView_rcv_icon));
-        a.recycle();
-    }
+        int bgRingColor = typedArray.getColor(R.styleable.RotationCircleView_rcv_bg_ring_color,
+                resources.getColor(R.color.rcv_default_bg_ring_color));
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if( getBitmap() == null ){
-            Log.d(TAG, "onDraw() :: bitmap != null");
-//            canvas.drawBitmap(getBitmap(),
-//                    new Rect(0,0,100,100),
-//                    new Rect(0,0,100,100),
-//                    null
-//                    );
-        } else {
-            Log.d(TAG, "onDraw() :: !!! bitmap == null !!!");
-        }
-        super.onDraw(canvas);
+        int bgThickness = (int) typedArray.getDimension(R.styleable.RotationCircleView_rcv_bg_ring_thickness,
+                resources.getDimension(R.dimen.rcv_default_bg_ring_thickness));
+
+        createBackground( bgColor, bgRingColor, bgThickness );
+
+        // TODO: 13.11.15 icon
+
+        // TODO: 13.11.15 text
+
+        typedArray.recycle();
     }
 
     public AnimationController getAnimationController() {
