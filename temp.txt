@@ -1,0 +1,18 @@
+commit d40208ec1d84ec6ab10ce40742e019cdfef96881
+Author: Serge <m.sergiigithub@gmail.com>
+Date:   Sun Nov 8 22:23:07 2015 +0200
+
+    Create custom circle view with animation #2
+    	   [ Type ] Task
+          [ Issue ] ZZ-2
+         [ Module ] Demo circle view
+    [ Description ] use string from resource
+commit f865359f8254a2bfd823c96d972fe1a6bcb3cacf
+Author: Serge <m.sergiigithub@gmail.com>
+Date:   Sun Nov 8 23:06:55 2015 +0200
+
+    Create custom circle view with animation #2
+    	   [ Type ] Task
+          [ Issue ] ZZ-2
+         [ Module ] Demo circle view
+    [ Description ] improve operation
