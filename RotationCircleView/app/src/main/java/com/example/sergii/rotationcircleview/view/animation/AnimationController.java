@@ -1,4 +1,4 @@
-package com.example.sergii.rotationcircleview.view;
+package com.example.sergii.rotationcircleview.view.animation;
 
 import android.util.Log;
 

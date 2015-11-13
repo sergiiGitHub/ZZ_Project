@@ -1,17 +1,20 @@
 package com.example.sergii.rotationcircleview.view;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.sergii.rotationcircleview.R;
+import com.example.sergii.rotationcircleview.view.animation.AnimationController;
+import com.example.sergii.rotationcircleview.view.background.Background;
+import com.example.sergii.rotationcircleview.view.background.IBackground;
 
 /**
  * Created by sergii on 11.11.15.
@@ -19,11 +22,12 @@ import com.example.sergii.rotationcircleview.R;
 public class RotationCircleView extends RelativeLayout {
 
     private static final String TAG = RotationCircleView.class.getSimpleName();
-    private static final Object BG_COLOR = 0;
 
     private AnimationController animationController;
-    private Bitmap bitmap;
-    private RotationCircleViewBackground background;
+
+    private Background background;
+    private ImageView iconImageView;
+    private TextView textView;
 
     public RotationCircleView(Context context) {
         super(context);
@@ -32,71 +36,122 @@ public class RotationCircleView extends RelativeLayout {
 
     public RotationCircleView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init( attrs, 0);
+        init(attrs, 0);
     }
 
     public RotationCircleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init( attrs, defStyleAttr);
+        init(attrs, defStyleAttr);
     }
 
     private void init(AttributeSet attrs, int defStyleAttr) {
-        setAnimationController(new AnimationController());
         initAttributes(attrs, defStyleAttr);
-        addView(background);
-    }
-
-    private void createBackground( int aColor, int aRingColor, int aRingThickness ) {
-        background = new RotationCircleViewBackground( getContext(), aColor, aRingColor, aRingThickness );
-        background.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 
     private void initAttributes(AttributeSet attrs, int defStyle) {
         final TypedArray typedArray = getContext().obtainStyledAttributes(
                 attrs, R.styleable.RotationCircleView, defStyle, 0);
 
-        Resources resources = getResources();
-
-        getAnimationController().setAnimDuration(typedArray.getInteger(
-                R.styleable.RotationCircleView_rcv_animDuration,
-                resources.getInteger(R.integer.rcv_default_animDuration)));
-
-        setBitmap(BitmapFactory.decodeResource(
-                getContext().getResources(), R.styleable.RotationCircleView_rcv_icon));
+        if ( attrs == null ){
+            Log.e(TAG, "initAttributes() :: attrs == null" );
+        }
+// TODO: 13.11.15 createAnimationmethod
+//        getAnimationController().setAnimDuration(typedArray.getInteger(
+//                R.styleable.RotationCircleView_rcv_animDuration,
+//                getResources().getInteger(R.integer.rcv_default_animDuration)));
 
         //bg
-        int bgColor = typedArray.getColor( R.styleable.RotationCircleView_rcv_bg_color,
-                resources.getColor(R.color.rcv_default_bg_color));
+        background = createBackground( typedArray );
+        addView(background);
 
-        int bgRingColor = typedArray.getColor(R.styleable.RotationCircleView_rcv_bg_ring_color,
-                resources.getColor(R.color.rcv_default_bg_ring_color));
+        //image view
+        iconImageView = createIconView( typedArray );
+        addView(iconImageView);
 
-        int bgThickness = (int) typedArray.getDimension(R.styleable.RotationCircleView_rcv_bg_ring_thickness,
-                resources.getDimension(R.dimen.rcv_default_bg_ring_thickness));
-
-        createBackground( bgColor, bgRingColor, bgThickness );
-
-        // TODO: 13.11.15 icon
-
-        // TODO: 13.11.15 text
+        textView = createTextView(typedArray);
+        addView(textView);
 
         typedArray.recycle();
     }
 
-    public AnimationController getAnimationController() {
-        return animationController;
+    private Background createBackground( TypedArray typedArray ) {
+
+        final int bgCircleColor = typedArray.getColor(R.styleable.RotationCircleView_rcv_bg_color,
+                getResources().getColor(R.color.rcv_default_bg_color));
+
+        final int bgRingColor = typedArray.getColor(R.styleable.RotationCircleView_rcv_bg_ring_color,
+                getResources().getColor(R.color.rcv_default_bg_ring_color));
+
+        final float bgThickness = typedArray.getDimension(R.styleable.RotationCircleView_rcv_bg_ring_thickness,
+                getResources().getDimension(R.dimen.rcv_default_bg_ring_thickness));
+
+        Background background = new Background( getContext() );
+        background.setCircleColor(bgCircleColor);
+        background.setRingColor(bgRingColor);
+        background.setRingThickness(bgThickness);
+        background.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        return background;
     }
 
-    public void setAnimationController(AnimationController animationController) {
-        this.animationController = animationController;
+    private ImageView createIconView(TypedArray typedArray) {
+
+        final ImageView imageView = new ImageView(getContext());
+
+        Drawable drawable = typedArray.getDrawable(R.styleable.RotationCircleView_rcv_icon_src);
+        if ( drawable == null ){
+            drawable = getResources().getDrawable(R.drawable.rcv_default_icon_src);
+        }
+
+        final int size = (int) typedArray.getDimension(R.styleable.RotationCircleView_rcv_fg_size,
+                getResources().getDimension(R.dimen.rcv_default_fg_size));
+        imageView.setImageDrawable(drawable);
+
+        RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(size, size);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        imageView.setLayoutParams(params);
+        return imageView;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    private TextView createTextView(TypedArray typedArray) {
+        final int textColor = typedArray.getColor(R.styleable.RotationCircleView_rcv_text_color,
+                getResources().getColor(R.color.rcv_default_text_color));
+
+        final float textSize = typedArray.getDimension(R.styleable.RotationCircleView_rcv_text_size,
+                getResources().getDimension(R.dimen.rcv_default_text_size));
+
+        String str = typedArray.getString(R.styleable.RotationCircleView_rcv_text );
+        if ( str == null ){
+            str = getResources().getString(R.string.rcv_default_text);
+        }
+
+        final int size = (int) typedArray.getDimension(R.styleable.RotationCircleView_rcv_fg_size,
+                getResources().getDimension(R.dimen.rcv_default_fg_size));
+
+        TextView textView = new TextView( getContext() );
+        textView.setText(str);
+        textView.setTextColor(textColor);
+        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        textView.setTextSize(textSize);
+        RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(size, size);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        textView.setLayoutParams(params);
+
+        return textView;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public ImageView getIconView() {
+        return iconImageView;
     }
+
+    public TextView getTextView() {
+        return textView;
+    }
+
+    public IBackground getCustomBackground( ){
+        return background;
+    }
+
 
 }
