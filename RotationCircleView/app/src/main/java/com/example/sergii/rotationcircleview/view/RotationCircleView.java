@@ -2,7 +2,6 @@ package com.example.sergii.rotationcircleview.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -55,21 +54,25 @@ public class RotationCircleView extends RelativeLayout {
         if ( attrs == null ){
             Log.e(TAG, "initAttributes() :: attrs == null" );
         }
-// TODO: 13.11.15 createAnimationmethod
-//        getAnimationController().setAnimDuration(typedArray.getInteger(
-//                R.styleable.RotationCircleView_rcv_animDuration,
-//                getResources().getInteger(R.integer.rcv_default_animDuration)));
+
+        animationController = new AnimationController(getContext());
+        animationController.setAnimDuration(typedArray.getInteger(
+                R.styleable.RotationCircleView_rcv_animDuration,
+                getResources().getInteger(R.integer.rcv_default_animDuration)));
 
         //bg
         background = createBackground( typedArray );
         addView(background);
 
         //image view
-        iconImageView = createIconView( typedArray );
+        iconImageView = createIconView(typedArray);
         addView(iconImageView);
+        animationController.setPrimaryView(iconImageView);
 
         textView = createTextView(typedArray);
+        textView.setVisibility(INVISIBLE);
         addView(textView);
+        animationController.setSecondaryView(textView);
 
         typedArray.recycle();
     }
@@ -153,5 +156,11 @@ public class RotationCircleView extends RelativeLayout {
         return background;
     }
 
+    public void startFlipAnimation() {
+        animationController.start();
+    }
 
+    public void cancelFlipAnimation() {
+        animationController.cancel();
+    }
 }
