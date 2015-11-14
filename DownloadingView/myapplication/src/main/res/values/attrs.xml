@@ -1,0 +1,13 @@
+<resources>
+    <declare-styleable name="DownloadingView">
+        <!--VIEW-->
+        <!-- BACKGROUND VIEW -->
+        <attr name="dw_dg_ring_thickness" format="dimension" />
+        <attr name="dw_bg_color" format="color" />
+        <attr name="dw_bg_ring_color_first" format="color" />
+        <attr name="dw_bg_ring_color_second" format="color" />
+        <!-- ICON VIEW -->
+        <attr name="dw_icon_src" format="integer" />
+        <attr name="dw_icon_size" format="dimension" />
+    </declare-styleable>
+</resources>
