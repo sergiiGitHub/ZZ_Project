@@ -4,7 +4,7 @@
     <!-- BACKGROUND VIEW -->
     <color name="dw_bg_color_default">#FFFFFF</color>
     <color name="dw_bg_ring_color_first_default">#0000FF</color>
-    <color name="dw_bg_ring_color_second_default">#88FFFFFF</color>
+    <color name="dw_bg_ring_color_second_default">#880000FF</color>
     <dimen name="dw_default_dg_ring_thickness_default">7dp</dimen>
 
     <!-- ICON VIEW -->

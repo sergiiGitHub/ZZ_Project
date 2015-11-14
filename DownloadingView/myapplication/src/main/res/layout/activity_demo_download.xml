@@ -15,11 +15,10 @@
         android:id="@+id/downloading_view"
         android:layout_width="210dp"
         android:layout_height="210dp"
-        android:background="#00FF00"
         app:dw_bg_color="@color/colorWhite"
         app:dw_bg_ring_color_first="@color/colorBlueHalf"
         app:dw_bg_ring_color_second="@color/colorPrimaryDark"
-        app:dw_dg_ring_thickness="21dp"
+        app:dw_dg_ring_thickness="7dp"
         app:dw_icon_size="120dp"
         app:dw_icon_src="@drawable/download_view"
         />

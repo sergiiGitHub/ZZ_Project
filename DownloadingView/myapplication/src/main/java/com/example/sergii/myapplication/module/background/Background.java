@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.view.View;
 
 /**
- * Created by sergii on 12.11.15.
+ * Created by sergii on 14.11.15.
  */
 public class Background extends View implements IBackground{
 
@@ -74,13 +74,24 @@ public class Background extends View implements IBackground{
     }
 
     @Override
-    public int getRingColor() {
+    public int getFirstRingColor() {
         return drawPaintRing.getColor();
     }
 
     @Override
-    public void setRingColor(int aColor) {
+    public void setFirstRingColor(int aColor) {
         drawPaintRing.setColor(aColor);
+    }
+
+    @Override
+    public int getSecondRingColor() {
+        return 0;
+        // TODO: 14.11.15
+    }
+
+    @Override
+    public void setSecondRingColor(int bgRingColorSecond) {
+        // TODO: 14.11.15
     }
 
     @Override

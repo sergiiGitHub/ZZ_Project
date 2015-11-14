@@ -1,16 +1,22 @@
 package com.example.sergii.myapplication.module.background;
 
 /**
- * Created by sergii on 13.11.15.
+ * Created by sergii on 14.11.15.
  */
 public interface IBackground {
 
     int getCircleColor();
     void setCircleColor(int aColor);
 
-    int getRingColor();
-    void setRingColor(int aColor);
+    int getFirstRingColor();
+    void setFirstRingColor(int aColor);
+
+    int getSecondRingColor();
+    void setSecondRingColor(int bgRingColorSecond);
 
     float getRingThickness();
     void setRingThickness(float aThickness);
+
+
+
 }

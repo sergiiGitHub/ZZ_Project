@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 /**
- * Created by sergii on 11.14.15.
+ * Created by sergii on 14.11.15.
  */
 public class AnimationController implements IDownloadController {
 

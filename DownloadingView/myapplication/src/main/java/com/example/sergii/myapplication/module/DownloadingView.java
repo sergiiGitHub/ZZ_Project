@@ -2,23 +2,16 @@ package com.example.sergii.myapplication.module;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.sergii.myapplication.R;
 import com.example.sergii.myapplication.module.animation.AnimationController;
 import com.example.sergii.myapplication.module.animation.IDownloadController;
+import com.example.sergii.myapplication.module.background.Background;
 
 /**
  * Created by sergii on 14.11.15.
@@ -28,6 +21,7 @@ public class DownloadingView extends RelativeLayout {
 
     private ImageView iconImageView;
     private AnimationController animationController;
+    private Background background;
 
     public DownloadingView(Context context) {
         super(context);
@@ -54,8 +48,9 @@ public class DownloadingView extends RelativeLayout {
         animationController = new AnimationController(getContext());
 
         //bg
-//        background = createBackground(typedArray);
-//        addView(background);
+        background = createBackground(typedArray);
+        addView(background);
+        animationController.setBackgroundView(iconImageView);
 
         //image view
         iconImageView = createIconView(typedArray);
@@ -64,6 +59,29 @@ public class DownloadingView extends RelativeLayout {
         animationController.setForegroundView(iconImageView);
 
         typedArray.recycle();
+    }
+
+    private Background createBackground( TypedArray typedArray ) {
+
+        final int bgCircleColor = typedArray.getColor(R.styleable.DownloadingView_dw_bg_color,
+                getResources().getColor(R.color.dw_bg_color_default));
+
+        final int bgRingColorFirst = typedArray.getColor(R.styleable.DownloadingView_dw_bg_ring_color_first,
+                getResources().getColor(R.color.dw_bg_ring_color_first_default));
+
+        final int bgRingColorSecond = typedArray.getColor(R.styleable.DownloadingView_dw_bg_ring_color_second,
+                getResources().getColor(R.color.dw_bg_ring_color_second_default));
+
+        final float bgThickness = typedArray.getDimension(R.styleable.DownloadingView_dw_dg_ring_thickness,
+                getResources().getDimension(R.dimen.dw_default_dg_ring_thickness_default));
+
+        Background background = new Background( getContext() );
+        background.setCircleColor(bgCircleColor);
+        background.setFirstRingColor(bgRingColorFirst);
+        background.setSecondRingColor(bgRingColorSecond);
+        background.setRingThickness(bgThickness);
+        background.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        return background;
     }
 
     private ImageView createIconView(TypedArray typedArray) {
