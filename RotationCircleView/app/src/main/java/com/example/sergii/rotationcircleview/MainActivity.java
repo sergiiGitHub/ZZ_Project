@@ -22,19 +22,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         rotationCircleView = (RotationCircleView)findViewById(R.id.progress_view);
+
         ((Button)findViewById(R.id.start_animation)).setOnClickListener(this);
         ((Button)findViewById(R.id.cancel_animation)).setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start_animation:
-                rotationCircleView.startFlipAnimation();
+                rotationCircleView.getAnimationController().start();
                 break;
             case R.id.cancel_animation:
-                rotationCircleView.cancelFlipAnimation();
+                rotationCircleView.getAnimationController().cancel();
                 break;
         }
     }

@@ -11,7 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.sergii.rotationcircleview.R;
-import com.example.sergii.rotationcircleview.view.animation.AnimationController;
+import com.example.sergii.rotationcircleview.animation.AnimationController;
+import com.example.sergii.rotationcircleview.animation.IRotationCircleViewController;
 import com.example.sergii.rotationcircleview.view.background.Background;
 import com.example.sergii.rotationcircleview.view.background.IBackground;
 
@@ -156,11 +157,7 @@ public class RotationCircleView extends RelativeLayout {
         return background;
     }
 
-    public void startFlipAnimation() {
-        animationController.start();
-    }
-
-    public void cancelFlipAnimation() {
-        animationController.cancel();
+    public IRotationCircleViewController getAnimationController(){
+        return animationController;
     }
 }
