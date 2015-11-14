@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.view.View;
 
 /**
@@ -13,15 +14,19 @@ public class Background extends View implements IBackground{
 
     private float centerX;
     private float centerY;
-    private float radiusRing;
+    private float radiusRingFirst;
     private float radiusCircle;
-    private Paint drawPaintRing;
+    private Paint drawPaintFirstRing;
+    private Paint drawPaintSecondRing;
     private Paint drawPaintCircle;
+    private float sizeSecondRing;
 
     public Background(Context context) {
         super(context);
-        initRing( );
+
         initCircle();
+        initFirstRingPaint();
+        initSecondRingPaint();
     }
 
     private void initCircle() {
@@ -30,19 +35,29 @@ public class Background extends View implements IBackground{
         drawPaintCircle.setAntiAlias(true);
     }
 
-    private void initRing() {
-        drawPaintRing = new Paint(Paint.ANTI_ALIAS_FLAG);
-        drawPaintRing.setStyle(Paint.Style.STROKE);
-        drawPaintRing.setStrokeWidth(4);
-        drawPaintRing.setColor(Color.GREEN);
-        drawPaintRing.setAntiAlias(true);
+    private void initFirstRingPaint() {
+        drawPaintSecondRing = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawPaintSecondRing.setStyle(Paint.Style.STROKE);
+        drawPaintSecondRing.setStrokeWidth(4);
+        drawPaintSecondRing.setColor(Color.GREEN);
+        drawPaintSecondRing.setAntiAlias(true);
+        drawPaintSecondRing.setStrokeCap(Paint.Cap.BUTT);
+    }
+
+    private void initSecondRingPaint() {
+        drawPaintFirstRing = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawPaintFirstRing.setStyle(Paint.Style.STROKE);
+        drawPaintFirstRing.setStrokeWidth(2);
+        drawPaintFirstRing.setColor(Color.GREEN);
+        drawPaintFirstRing.setAntiAlias(true);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawCircle(centerX, centerY, radiusRing, drawPaintRing);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
+        canvas.drawCircle(centerX, centerY, radiusRingFirst, drawPaintFirstRing);
+        canvas.drawArc(new RectF(0, 0, sizeSecondRing, sizeSecondRing), 0, 60, false, drawPaintSecondRing );
     }
 
     @Override
@@ -58,9 +73,10 @@ public class Background extends View implements IBackground{
     }
 
     private void updatePaints() {
-        float delta = drawPaintRing.getStrokeWidth()/2;
-        radiusRing = Math.min(centerX, centerX) - delta;
-        radiusCircle = radiusRing - delta + 1;
+        float delta = drawPaintFirstRing.getStrokeWidth()/2;
+        radiusRingFirst = Math.min(centerX, centerX) - delta;
+        radiusCircle = radiusRingFirst - delta + 1;
+        sizeSecondRing = Math.min( getWidth(), getHeight() ) - delta;
     }
 
     @Override
@@ -75,33 +91,33 @@ public class Background extends View implements IBackground{
 
     @Override
     public int getFirstRingColor() {
-        return drawPaintRing.getColor();
+        return drawPaintFirstRing.getColor();
     }
 
     @Override
     public void setFirstRingColor(int aColor) {
-        drawPaintRing.setColor(aColor);
+        drawPaintFirstRing.setColor(aColor);
     }
 
     @Override
     public int getSecondRingColor() {
-        return 0;
-        // TODO: 14.11.15
+        return drawPaintSecondRing.getColor();
     }
 
     @Override
     public void setSecondRingColor(int bgRingColorSecond) {
-        // TODO: 14.11.15
+        drawPaintSecondRing.setColor(bgRingColorSecond);
     }
 
     @Override
     public float getRingThickness() {
-        return drawPaintRing.getStrokeWidth();
+        return drawPaintFirstRing.getStrokeWidth();
     }
 
     @Override
     public void setRingThickness(float aThickness) {
-        drawPaintRing.setStrokeWidth(aThickness);
+        drawPaintFirstRing.setStrokeWidth(aThickness);
+        drawPaintSecondRing.setStrokeWidth(aThickness);
         updatePaints();
     }
 }
