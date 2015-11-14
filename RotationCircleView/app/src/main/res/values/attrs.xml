@@ -3,7 +3,8 @@
         <!--VIEW-->
         <attr name="rcv_fg_size" format="dimension" />
         <!-- ANIMATION  -->
-        <attr name="rcv_animDuration" format="integer" />
+        <attr name="rcv_anim_duration" format="integer" />
+        <attr name="rcv_anim_back_animation_delay" format="integer" />
         <!-- BACKGROUND VIEW -->
         <attr name="rcv_bg_color" format="color" />
         <attr name="rcv_bg_ring_color" format="color" />

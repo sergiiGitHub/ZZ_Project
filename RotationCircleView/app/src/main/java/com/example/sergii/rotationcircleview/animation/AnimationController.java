@@ -3,6 +3,7 @@ package com.example.sergii.rotationcircleview.animation;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -17,16 +18,33 @@ public class AnimationController implements FlipFlopAnimation.IControllerView
 
     private static final String TAG = AnimationController.class.getSimpleName();
 
+    private final Handler handler;
+    private final Runnable runnableStart;
+
     private FlipFlopAnimation flipFlopAnimation;
     private Animator flipInCancel;
     private View primaryView;
     private View secondaryView;
 
     boolean isForward = true;
+    boolean isCancel = true;
     private boolean isAnimationFinish = true;
+    private long delayForBackwardAnimation;
 
     public AnimationController( Context aContext ){
+
+        handler = new Handler();
+        runnableStart = createRunnableStart();
         initAnimation(aContext);
+    }
+
+    private Runnable createRunnableStart() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                start();
+            }
+        };
     }
 
     private void initAnimation(Context aContext) {
@@ -63,14 +81,13 @@ public class AnimationController implements FlipFlopAnimation.IControllerView
     }
 
     @Override
-    public void setDelayForBackwardAnimation(long animDuration) {
-        // TODO: 14.11.15
-
+    public void setDelayForBackwardAnimation(long aDelayForBackwardAnimation) {
+        this.delayForBackwardAnimation = aDelayForBackwardAnimation;
     }
 
     @Override
-    public void getDelayForBackwardAnimation() {
-        // TODO: 14.11.15
+    public long getDelayForBackwardAnimation() {
+        return delayForBackwardAnimation;
     }
 
     @Override
@@ -87,6 +104,7 @@ public class AnimationController implements FlipFlopAnimation.IControllerView
     public void start() {
         if (isAnimationFinish){
             isAnimationFinish = false;
+            isCancel = false;
             flipFlopAnimation.start();
         } else {
             cancel();
@@ -99,7 +117,9 @@ public class AnimationController implements FlipFlopAnimation.IControllerView
         primaryView.setVisibility(View.VISIBLE);
         secondaryView.setVisibility(View.INVISIBLE);
         flipInCancel.start();
+        handler.removeCallbacks(runnableStart);
         isForward = true;
+        isCancel = true;
     }
 
     @Override
@@ -112,6 +132,9 @@ public class AnimationController implements FlipFlopAnimation.IControllerView
         Log.d(TAG, "onAnimationEnd() called with: " + "animation = [" + animation + "]");
         isAnimationFinish = true;
         swapState();
+        if( !isForward && !isCancel ){
+            handler.postDelayed( runnableStart, getDelayForBackwardAnimation() );
+        }
     }
 
     @Override

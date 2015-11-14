@@ -2,8 +2,8 @@
 <resources>
 
     <!-- ANIMATION  -->
-    <integer name="rcv_default_animDuration">1000</integer>
-
+    <integer name="rcv_default_anim_duration">1000</integer>
+    <integer name="rcv_default_anim_back_animation_delay">300</integer>
     <!-- BACKGROUND VIEW -->
     <color name="rcv_default_bg_color">#FFFFFF</color>
     <color name="rcv_default_bg_ring_color">#88FFFFFF</color>

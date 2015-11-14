@@ -56,13 +56,9 @@ public class RotationCircleView extends RelativeLayout {
             Log.e(TAG, "initAttributes() :: attrs == null" );
         }
 
-        animationController = new AnimationController(getContext());
-        animationController.setAnimDuration(typedArray.getInteger(
-                R.styleable.RotationCircleView_rcv_animDuration,
-                getResources().getInteger(R.integer.rcv_default_animDuration)));
-
+        animationController = createAnimationController(typedArray);
         //bg
-        background = createBackground( typedArray );
+        background = createBackground(typedArray);
         addView(background);
 
         //image view
@@ -76,6 +72,19 @@ public class RotationCircleView extends RelativeLayout {
         animationController.setSecondaryView(textView);
 
         typedArray.recycle();
+    }
+
+    private AnimationController createAnimationController(TypedArray typedArray) {
+        final AnimationController controller = new AnimationController(getContext());
+        controller.setAnimDuration(typedArray.getInteger(
+                R.styleable.RotationCircleView_rcv_anim_duration,
+                getResources().getInteger(R.integer.rcv_default_anim_duration)));
+
+        controller.setDelayForBackwardAnimation(typedArray.getInteger(
+                R.styleable.RotationCircleView_rcv_anim_back_animation_delay,
+                getResources().getInteger(R.integer.rcv_default_anim_back_animation_delay)));
+
+        return controller;
     }
 
     private Background createBackground( TypedArray typedArray ) {

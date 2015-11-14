@@ -7,7 +7,7 @@ public interface IRotationCircleViewController {
     long getAnimDuration();
     void setAnimDuration(long animDuration);
 
-    void getDelayForBackwardAnimation();
+    long getDelayForBackwardAnimation();
     void setDelayForBackwardAnimation(long animDuration);
 
     void cancel();
