@@ -43,14 +43,10 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     }
 
     public void start() {
-        if (isAnimationFinish){
-            isAnimationFinish = false;
-            view.setVisibility(View.VISIBLE);
+        isAnimationFinish = false;
+        view.setVisibility(View.VISIBLE);
 
-            flipIn.start();
-        } else {
-            cancel();
-        }
+        flipIn.start();
     }
 
     public void cancel() {
@@ -76,6 +72,10 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     @Override
     public void onAnimationRepeat(Animator animation) {
 
+    }
+
+    public boolean isAnimationFinish() {
+        return isAnimationFinish;
     }
 }
 

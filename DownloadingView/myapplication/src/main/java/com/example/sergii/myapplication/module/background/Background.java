@@ -8,23 +8,28 @@ import android.graphics.RectF;
 import android.view.View;
 
 import com.example.sergii.myapplication.module.animation.IViewFiniteAnimationListener;
+import com.example.sergii.myapplication.module.animation.IViewProgressAnimationListener;
 
 /**
  * Created by sergii on 14.11.15.
  */
-public class Background extends View implements IBackground, IViewFiniteAnimationListener {
+public class Background extends View implements IBackground,
+        IViewFiniteAnimationListener,
+        IViewProgressAnimationListener {
 
     private static final float INITIAL_ANGLE = -90;
     private float centerX;
     private float centerY;
-    // TODO: 15.11.15 remove
+    // TODO: 15.11.15 removev
     private float radiusRingFirst;
     private float radiusCircle;
     private Paint drawPaintFirstRing;
     private Paint drawPaintSecondRing;
     private Paint drawPaintCircle;
     private RectF rectRingBound;
-    private float firstRingActualValue = 0;
+    private float finiteSweepAngle = 0;
+    private float progressSweepAngle = 1;
+    private float progressActualAngle = INITIAL_ANGLE ;
 
     public Background(Context context) {
         super(context);
@@ -61,9 +66,9 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
-        canvas.drawArc(rectRingBound, INITIAL_ANGLE, firstRingActualValue, false, drawPaintFirstRing);
+        canvas.drawArc(rectRingBound, INITIAL_ANGLE, finiteSweepAngle, false, drawPaintFirstRing);
         // TODO: 15.11.15 implement animation
-        canvas.drawArc(rectRingBound, 60, 60, false, drawPaintSecondRing);
+        canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
     }
 
     @Override
@@ -130,9 +135,23 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
 
     @Override
     public void setActualAngleFiniteAnimation(float actualAngle) {
-        firstRingActualValue = actualAngle;
+        finiteSweepAngle = actualAngle;
     }
 
+    @Override
+    public void setActualAngleProgressAnimation(float actualAngle) {
+        this.progressActualAngle = actualAngle;
+    }
+
+    @Override
+    public void setSweepAngleProgressValue(float sweepAngle) {
+        this.progressSweepAngle = sweepAngle;
+    }
+
+    @Override
+    public float getProgressCurrentAngle() {
+        return INITIAL_ANGLE;
+    }
 }
 
 

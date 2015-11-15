@@ -8,7 +8,7 @@ import android.view.View;
 public interface IDownloadController {
 
     void setFirstRingView( IViewFiniteAnimationListener aView );
-    void setSecondRingView( View aView );
+    void setSecondRingView( IViewProgressAnimationListener aView );
     void setForegroundView( View aView );
 
     void cancel();

@@ -8,44 +8,39 @@ import android.view.animation.DecelerateInterpolator;
 /**
  * Created by sergii on 15.11.15.
  */
-public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.AnimatorListener {
+public class ProgressRingAnimation implements IProgressRingAnimation, Animator.AnimatorListener {
 
-    private static final String TAG = FiniteRingAnimation.class.getSimpleName();
-    private static final long ANIMATION_DURATION = 1000;
-    private static final float START_SWEEP_ANGLE = 0;
-    private static final float FINAL_SWEEP_ANGLE = 360;
+    private static final String TAG = ProgressRingAnimation.class.getSimpleName();
+    private static final long ANIMATION_DURATION = 3000;
+    private static final float FINAL_ACTUAL_ANGLE = 360;
 
     private ValueAnimator startAngleRotate;
-    private IViewFiniteAnimationListener viewFiniteListener;
+    private IViewProgressAnimationListener viewProgressListener;
     private boolean isAnimationFinish = true;
+    private float currentAngle;
 
     private void createAnimation() {
-        startAngleRotate = ValueAnimator.ofFloat(START_SWEEP_ANGLE, FINAL_SWEEP_ANGLE);
+        currentAngle = getViewProgressListener().getProgressCurrentAngle();
+        startAngleRotate = ValueAnimator.ofFloat(currentAngle, currentAngle + FINAL_ACTUAL_ANGLE);
         startAngleRotate.setDuration(ANIMATION_DURATION);
-        startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
+        //startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
         startAngleRotate.addListener(this);
         startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                if (getViewFiniteListener() != null) {
+                if (getViewProgressListener() != null) {
                     updateView((Float) animation.getAnimatedValue());
                 }
             }
         });
     }
 
-    private IViewFiniteAnimationListener getViewFiniteListener(){
-        return viewFiniteListener;
+    private void setIsAnimationFinish(boolean aIsAnimationFinish) {
+        this.isAnimationFinish = aIsAnimationFinish;
     }
 
-    @Override
-    public void start() {
-        if ( getViewFiniteListener() == null ){
-            Log.e(TAG, "start() called with: view == null ");
-        }
-
-        getAnimation().start();
-        setIsAnimationFinish(false);
+    private IViewProgressAnimationListener getViewProgressListener(){
+        return viewProgressListener;
     }
 
     public boolean isAnimationFinish() {
@@ -59,24 +54,10 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
         return startAngleRotate;
     }
 
-    @Override
-    public void cancel() {
-        startAngleRotate.cancel();
-        if ( getViewFiniteListener() != null ){
-            updateView(START_SWEEP_ANGLE);
-        }
-    }
-
     private void updateView(float aCurrentAngle) {
         Log.d(TAG, "updateView() called with:aCurrentAngle = " + aCurrentAngle );
-        getViewFiniteListener().setActualAngleFiniteAnimation(aCurrentAngle);
-        getViewFiniteListener().invalidate();
-    }
-
-    @Override
-    public void setView(IViewFiniteAnimationListener aViewFiniteListener) {
-        resetAnimation();
-        this.viewFiniteListener = aViewFiniteListener;
+        getViewProgressListener().setActualAngleProgressAnimation(aCurrentAngle);
+        getViewProgressListener().invalidate();
     }
 
     private void resetAnimation() {
@@ -84,6 +65,30 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
             startAngleRotate.cancel();
             startAngleRotate = null;
         }
+    }
+
+    @Override
+    public void start() {
+        if ( getViewProgressListener() == null ){
+            Log.e(TAG, "start() called with: view == null ");
+        }
+
+        getAnimation().start();
+        setIsAnimationFinish(false);
+    }
+
+    @Override
+    public void cancel() {
+        startAngleRotate.cancel();
+        if ( getViewProgressListener() != null ){
+            updateView(currentAngle);
+        }
+    }
+
+    @Override
+    public void setView(IViewProgressAnimationListener aViewFiniteListener) {
+        resetAnimation();
+        this.viewProgressListener = aViewFiniteListener;
     }
 
     @Override
@@ -95,10 +100,6 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
     public void onAnimationEnd(Animator animation) {
         Log.d(TAG, "onAnimationEnd() called with: " + "animation = [" + animation + "]");
         setIsAnimationFinish( true );
-    }
-
-    private void setIsAnimationFinish(boolean aIsAnimationFinish) {
-        this.isAnimationFinish = aIsAnimationFinish;
     }
 
     @Override

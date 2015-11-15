@@ -51,6 +51,7 @@ public class DownloadingView extends RelativeLayout {
         background = createBackground(typedArray);
         addView(background);
         animationController.setFirstRingView(background);
+        animationController.setSecondRingView(background);
 
         //image view
         iconImageView = createIconView(typedArray);
