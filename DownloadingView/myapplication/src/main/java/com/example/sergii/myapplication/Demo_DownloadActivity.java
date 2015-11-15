@@ -75,7 +75,7 @@ public class Demo_DownloadActivity extends AppCompatActivity implements View.OnC
             if ( !view.getAnimationController().isProgressFinish() ) {
                 value += delta;
                 view.getAnimationController().updateProgress(value);
-                handler.postDelayed( runnebleUpdate, 50 );
+                handler.postDelayed( runnebleUpdate, 100 );
             }
         }
 

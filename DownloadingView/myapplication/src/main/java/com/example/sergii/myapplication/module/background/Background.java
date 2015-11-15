@@ -28,7 +28,7 @@ public class Background extends View implements IBackground,
     private Paint drawPaintCircle;
     private RectF rectRingBound;
     private float finiteSweepAngle = 0;
-    private float progressSweepAngle = 1;
+    private float progressSweepAngle = 0;
     private float progressActualAngle = INITIAL_ANGLE ;
 
     public Background(Context context) {

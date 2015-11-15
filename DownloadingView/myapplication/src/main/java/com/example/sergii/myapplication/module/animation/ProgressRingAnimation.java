@@ -11,7 +11,7 @@ import android.view.animation.LinearInterpolator;
 public class ProgressRingAnimation implements IProgressRingAnimation, Animator.AnimatorListener {
 
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
-    private static final long ANIMATION_DURATION = 3000;
+    private static final long ANIMATION_DURATION = 1300;
     private static final float FINAL_ACTUAL_ANGLE = 360;
     private static final float PERCENTAGE_TO_ANGLE_COEF = FINAL_ACTUAL_ANGLE / 100;
 
@@ -84,6 +84,7 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
         startAngleRotate.cancel();
         if ( getViewProgressListener() != null ){
             updateView(currentAngle);
+            getViewProgressListener().setSweepAngleProgressValue(0);
         }
     }
 
@@ -101,7 +102,7 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
                 Log.d(TAG, "setProgress :: aValue = " + aValue + "; sweepAngle = " + sweepAngle  );
                 cancel();
             }
-            getViewProgressListener().setSweepAngleProgressValue( aValue );
+            getViewProgressListener().setSweepAngleProgressValue( sweepAngle );
             getViewProgressListener().invalidate();
         }
     }
