@@ -81,10 +81,12 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
 
     @Override
     public void cancel() {
-        startAngleRotate.cancel();
+        if ( startAngleRotate != null ) {
+            startAngleRotate.cancel();
+        }
         if ( getViewProgressListener() != null ){
-            updateView(currentAngle);
             getViewProgressListener().setSweepAngleProgressValue(0);
+            updateView(currentAngle);
         }
     }
 

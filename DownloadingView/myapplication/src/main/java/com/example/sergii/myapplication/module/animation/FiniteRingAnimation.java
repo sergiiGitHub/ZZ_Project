@@ -61,8 +61,11 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
 
     @Override
     public void cancel() {
-        startAngleRotate.cancel();
-        if ( getViewFiniteListener() != null ){
+        if ( startAngleRotate != null ){
+            startAngleRotate.cancel();
+        }
+
+        if ( getViewFiniteListener() != null) {
             updateView(START_SWEEP_ANGLE);
         }
     }

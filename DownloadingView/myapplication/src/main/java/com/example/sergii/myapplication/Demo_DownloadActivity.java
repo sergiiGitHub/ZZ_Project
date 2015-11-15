@@ -86,6 +86,8 @@ public class Demo_DownloadActivity extends AppCompatActivity implements View.OnC
 
         public void reset() {
             isInterrupted = false;
+            handler.removeCallbacks(runnebleUpdate);
+            value = 0;
         }
     }
 
