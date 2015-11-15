@@ -63,7 +63,7 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
         canvas.drawArc(rectRingBound, INITIAL_ANGLE, firstRingActualValue, false, drawPaintFirstRing);
         // TODO: 15.11.15 implement animation
-        canvas.drawArc(rectRingBound, 0, 60, false, drawPaintSecondRing );
+        canvas.drawArc(rectRingBound, 60, 60, false, drawPaintSecondRing);
     }
 
     @Override
@@ -74,12 +74,12 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
     }
 
     private void updateCenter() {
-        centerX = getWidth()/2;
-        centerY = getHeight()/2;
+        centerX = getWidth() / 2;
+        centerY = getHeight() / 2;
     }
 
     private void updatePaints() {
-        float delta = drawPaintFirstRing.getStrokeWidth()/2;
+        float delta = drawPaintFirstRing.getStrokeWidth() / 2;
         radiusRingFirst = Math.min(centerX, centerX) - delta;
         radiusCircle = radiusRingFirst - delta + 1;
         float sizeSecondRing = Math.min(getWidth(), getHeight()) - delta;
@@ -133,10 +133,6 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
         firstRingActualValue = actualAngle;
     }
 
-    @Override
-    public float getInitialAngle( ) {
-        return INITIAL_ANGLE;
-    }
 }
 
 

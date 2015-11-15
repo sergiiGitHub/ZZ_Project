@@ -6,8 +6,6 @@ package com.example.sergii.myapplication.module.animation;
 public interface IViewFiniteAnimationListener {
 
     void setActualAngleFiniteAnimation(float actualAngle);
-    float getInitialAngle();
-
     void invalidate();
 
 }

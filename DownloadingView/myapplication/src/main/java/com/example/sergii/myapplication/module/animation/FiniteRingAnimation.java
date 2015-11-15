@@ -12,15 +12,15 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
 
     private static final String TAG = FiniteRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1000;
-    private static final float FINAL_ANGLE = 360;
+    private static final float START_SWEEP_ANGLE = 0;
+    private static final float FINAL_SWEEP_ANGLE = 360;
 
     private ValueAnimator startAngleRotate;
     private IViewFiniteAnimationListener viewFiniteListener;
     private boolean isAnimationFinish = true;
 
     private void createAnimation() {
-        final float startAngle = getViewFiniteListener().getInitialAngle();
-        startAngleRotate = ValueAnimator.ofFloat(startAngle, FINAL_ANGLE);
+        startAngleRotate = ValueAnimator.ofFloat(START_SWEEP_ANGLE, FINAL_SWEEP_ANGLE);
         startAngleRotate.setDuration(ANIMATION_DURATION);
         startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
         startAngleRotate.addListener(this);
@@ -68,7 +68,7 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
     public void cancel() {
         startAngleRotate.cancel();
         if ( getViewFiniteListener() != null ){
-            updateView(0);
+            updateView(START_SWEEP_ANGLE);
         }
     }
 
