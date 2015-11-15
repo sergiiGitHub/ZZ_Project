@@ -24,7 +24,7 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
     private Paint drawPaintSecondRing;
     private Paint drawPaintCircle;
     private RectF rectRingBound;
-    private float firstRingActualValue;
+    private float firstRingActualValue = 0;
 
     public Background(Context context) {
         super(context);
@@ -61,8 +61,8 @@ public class Background extends View implements IBackground, IViewFiniteAnimatio
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
-//        canvas.drawCircle(centerX, centerY, radiusRingFirst, drawPaintFirstRing);
         canvas.drawArc(rectRingBound, INITIAL_ANGLE, firstRingActualValue, false, drawPaintFirstRing);
+        // TODO: 15.11.15 implement animation
         canvas.drawArc(rectRingBound, 0, 60, false, drawPaintSecondRing );
     }
 
