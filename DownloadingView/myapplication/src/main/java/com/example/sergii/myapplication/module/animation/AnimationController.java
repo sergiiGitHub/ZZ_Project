@@ -17,17 +17,14 @@ public class AnimationController implements IDownloadController {
         secondRingAnimation = new ProgressRingAnimation();
     }
 
-    @Override
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
         firstRingAnimation.setView(aView);
     }
 
-    @Override
     public void setSecondRingView(IViewProgressAnimationListener aView) {
         secondRingAnimation.setView(aView);
     }
 
-    @Override
     public void setForegroundView(View aView) {
         flipInAnimation.setView(aView);
     }
@@ -46,6 +43,16 @@ public class AnimationController implements IDownloadController {
         flipInAnimation.start();
         firstRingAnimation.start();
         secondRingAnimation.start();
+    }
+
+    @Override
+    public void updateProgress(float aValue) {
+        secondRingAnimation.setProgress( aValue );
+    }
+
+    @Override
+    public boolean isProgressFinish() {
+        return secondRingAnimation.isAnimationFinish();
     }
 
     private void cancelAllRunningAnimation() {

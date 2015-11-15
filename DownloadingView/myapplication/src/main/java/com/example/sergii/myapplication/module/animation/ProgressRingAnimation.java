@@ -3,7 +3,7 @@ package com.example.sergii.myapplication.module.animation;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.util.Log;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 /**
  * Created by sergii on 15.11.15.
@@ -13,6 +13,7 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 3000;
     private static final float FINAL_ACTUAL_ANGLE = 360;
+    private static final float PERCENTAGE_TO_ANGLE_COEF = FINAL_ACTUAL_ANGLE / 100;
 
     private ValueAnimator startAngleRotate;
     private IViewProgressAnimationListener viewProgressListener;
@@ -23,7 +24,8 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
         currentAngle = getViewProgressListener().getProgressCurrentAngle();
         startAngleRotate = ValueAnimator.ofFloat(currentAngle, currentAngle + FINAL_ACTUAL_ANGLE);
         startAngleRotate.setDuration(ANIMATION_DURATION);
-        //startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
+        startAngleRotate.setRepeatCount(ValueAnimator.INFINITE);
+        startAngleRotate.setInterpolator(new LinearInterpolator());
         startAngleRotate.addListener(this);
         startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -89,6 +91,23 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
     public void setView(IViewProgressAnimationListener aViewFiniteListener) {
         resetAnimation();
         this.viewProgressListener = aViewFiniteListener;
+    }
+
+    @Override
+    public void setProgress(float aValue) {
+        if ( getViewProgressListener() != null ){
+            float sweepAngle = aValue * PERCENTAGE_TO_ANGLE_COEF;
+            if ( isDownloadFinish(sweepAngle ) ){
+                Log.d(TAG, "setProgress :: aValue = " + aValue + "; sweepAngle = " + sweepAngle  );
+                cancel();
+            }
+            getViewProgressListener().setSweepAngleProgressValue( aValue );
+            getViewProgressListener().invalidate();
+        }
+    }
+
+    private boolean isDownloadFinish(float sweepAngle) {
+        return sweepAngle - FINAL_ACTUAL_ANGLE > 0.f;
     }
 
     @Override

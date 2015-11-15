@@ -9,4 +9,6 @@ public interface IProgressRingAnimation {
     void cancel();
 
     void setView(IViewProgressAnimationListener aViewFiniteListener);
+
+    void setProgress(float aValue);
 }
