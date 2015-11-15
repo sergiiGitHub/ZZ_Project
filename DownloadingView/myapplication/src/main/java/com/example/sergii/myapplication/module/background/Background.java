@@ -7,19 +7,24 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.example.sergii.myapplication.module.animation.IViewFiniteAnimationListener;
+
 /**
  * Created by sergii on 14.11.15.
  */
-public class Background extends View implements IBackground{
+public class Background extends View implements IBackground, IViewFiniteAnimationListener {
 
+    private static final float INITIAL_ANGLE = -90;
     private float centerX;
     private float centerY;
+    // TODO: 15.11.15 remove
     private float radiusRingFirst;
     private float radiusCircle;
     private Paint drawPaintFirstRing;
     private Paint drawPaintSecondRing;
     private Paint drawPaintCircle;
-    private float sizeSecondRing;
+    private RectF rectRingBound;
+    private float firstRingActualValue;
 
     public Background(Context context) {
         super(context);
@@ -56,8 +61,9 @@ public class Background extends View implements IBackground{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
-        canvas.drawCircle(centerX, centerY, radiusRingFirst, drawPaintFirstRing);
-        canvas.drawArc(new RectF(0, 0, sizeSecondRing, sizeSecondRing), 0, 60, false, drawPaintSecondRing );
+//        canvas.drawCircle(centerX, centerY, radiusRingFirst, drawPaintFirstRing);
+        canvas.drawArc(rectRingBound, INITIAL_ANGLE, firstRingActualValue, false, drawPaintFirstRing);
+        canvas.drawArc(rectRingBound, 0, 60, false, drawPaintSecondRing );
     }
 
     @Override
@@ -76,7 +82,8 @@ public class Background extends View implements IBackground{
         float delta = drawPaintFirstRing.getStrokeWidth()/2;
         radiusRingFirst = Math.min(centerX, centerX) - delta;
         radiusCircle = radiusRingFirst - delta + 1;
-        sizeSecondRing = Math.min( getWidth(), getHeight() ) - delta;
+        float sizeSecondRing = Math.min(getWidth(), getHeight()) - delta;
+        rectRingBound = new RectF(delta, delta, sizeSecondRing, sizeSecondRing);
     }
 
     @Override
@@ -119,6 +126,16 @@ public class Background extends View implements IBackground{
         drawPaintFirstRing.setStrokeWidth(aThickness);
         drawPaintSecondRing.setStrokeWidth(aThickness);
         updatePaints();
+    }
+
+    @Override
+    public void setActualAngleFiniteAnimation(float actualAngle) {
+        firstRingActualValue = actualAngle;
+    }
+
+    @Override
+    public float getInitialAngle( ) {
+        return INITIAL_ANGLE;
     }
 }
 
