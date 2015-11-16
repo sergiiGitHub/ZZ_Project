@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -13,6 +14,7 @@ import com.example.sergii.myapplication.R;
 import com.example.sergii.myapplication.module.animation.AnimationController;
 import com.example.sergii.myapplication.module.animation.IDownloadController;
 import com.example.sergii.myapplication.module.background.Background;
+import com.example.sergii.myapplication.module.foregroud.Foreground;
 
 /**
  * Created by sergii on 14.11.15.
@@ -23,6 +25,7 @@ public class DownloadingView extends RelativeLayout {
     private ImageView iconImageView;
     private AnimationController animationController;
     private Background background;
+    private View foregroundView;
 
     public DownloadingView(Context context) {
         super(context);
@@ -57,11 +60,31 @@ public class DownloadingView extends RelativeLayout {
         //image view
         iconImageView = createIconView(typedArray);
         iconImageView.setVisibility(INVISIBLE);
+        iconImageView.setScaleX(1.2f);
+        iconImageView.setScaleY(1.2f);
+        iconImageView.setAlpha(0.2f);
         iconImageView.setBackgroundColor(Color.argb(55, 0, 50, 0));
         addView(iconImageView);
         animationController.setForegroundView(iconImageView);
 
+        foregroundView = createForegroundView(typedArray);
+        addView(foregroundView);
+
         typedArray.recycle();
+    }
+
+    private View createForegroundView(TypedArray typedArray) {
+
+        final Foreground imageView = new Foreground(getContext());
+
+        final int size = (int) typedArray.getDimension(R.styleable.DownloadingView_dw_icon_size,
+                getResources().getDimension(R.dimen.dw_icon_size_default));
+
+        RelativeLayout.LayoutParams params =
+                new RelativeLayout.LayoutParams(size, size);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        imageView.setLayoutParams(params);
+        return imageView;
     }
 
     private Background createBackground( TypedArray typedArray ) {

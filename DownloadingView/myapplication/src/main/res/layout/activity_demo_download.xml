@@ -20,7 +20,7 @@
         app:dw_bg_ring_color_first="@color/colorBlueHalf"
         app:dw_bg_ring_color_second="@color/colorBlueLight"
         app:dw_dg_ring_thickness="7dp"
-        app:dw_icon_size="230dp"
+        app:dw_icon_size="210dp"
         app:dw_icon_src="@drawable/download_view"
         />
 
