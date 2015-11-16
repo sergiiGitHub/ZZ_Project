@@ -2,6 +2,7 @@ package com.example.sergii.myapplication.module;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class DownloadingView extends RelativeLayout {
         //image view
         iconImageView = createIconView(typedArray);
         iconImageView.setVisibility(INVISIBLE);
+        iconImageView.setBackgroundColor(Color.argb(55, 0, 50, 0));
         addView(iconImageView);
         animationController.setForegroundView(iconImageView);
 

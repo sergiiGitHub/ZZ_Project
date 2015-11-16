@@ -8,7 +8,7 @@ import android.view.animation.LinearInterpolator;
 /**
  * Created by sergii on 15.11.15.
  */
-public class ProgressRingAnimation implements IProgressRingAnimation, Animator.AnimatorListener {
+public class ProgressRingAnimation implements Animator.AnimatorListener {
 
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1300;
@@ -69,7 +69,6 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
         }
     }
 
-    @Override
     public void start() {
         if ( getViewProgressListener() == null ){
             Log.e(TAG, "start() called with: view == null ");
@@ -79,7 +78,6 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
         setIsAnimationFinish(false);
     }
 
-    @Override
     public void cancel() {
         if ( startAngleRotate != null ) {
             startAngleRotate.cancel();
@@ -90,13 +88,11 @@ public class ProgressRingAnimation implements IProgressRingAnimation, Animator.A
         }
     }
 
-    @Override
     public void setView(IViewProgressAnimationListener aViewFiniteListener) {
         resetAnimation();
         this.viewProgressListener = aViewFiniteListener;
     }
 
-    @Override
     public void setProgress(float aValue) {
         if ( getViewProgressListener() != null ){
             float sweepAngle = aValue * PERCENTAGE_TO_ANGLE_COEF;

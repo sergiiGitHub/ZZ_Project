@@ -18,10 +18,10 @@ public class Background extends View implements IBackground,
         IViewProgressAnimationListener {
 
     private static final float INITIAL_ANGLE = -90;
+    private static final float BORDER_COEF = 1.2f;
     private float centerX;
     private float centerY;
-    // TODO: 15.11.15 removev
-    private float radiusRingFirst;
+
     private float radiusCircle;
     private Paint drawPaintFirstRing;
     private Paint drawPaintSecondRing;
@@ -84,11 +84,10 @@ public class Background extends View implements IBackground,
     }
 
     private void updatePaints() {
-        float delta = drawPaintFirstRing.getStrokeWidth() / 2;
-        radiusRingFirst = Math.min(centerX, centerX) - delta;
-        radiusCircle = radiusRingFirst - delta + 1;
-        float sizeSecondRing = Math.min(getWidth(), getHeight()) - delta;
-        rectRingBound = new RectF(delta, delta, sizeSecondRing, sizeSecondRing);
+        float delta = drawPaintFirstRing.getStrokeWidth() * BORDER_COEF;
+        radiusCircle = Math.min(centerX, centerX);
+        float sizeSecondRing = Math.min(getWidth(), getHeight());
+        rectRingBound = new RectF(delta, delta, sizeSecondRing - delta, sizeSecondRing - delta);
     }
 
     @Override

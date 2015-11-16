@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="#dddddd"
     tools:context=".Demo_DownloadActivity">
 
     <com.example.sergii.myapplication.module.DownloadingView
@@ -17,9 +18,9 @@
         android:layout_height="210dp"
         app:dw_bg_color="@color/colorWhite"
         app:dw_bg_ring_color_first="@color/colorBlueHalf"
-        app:dw_bg_ring_color_second="@color/colorPrimaryDark"
+        app:dw_bg_ring_color_second="@color/colorBlueLight"
         app:dw_dg_ring_thickness="7dp"
-        app:dw_icon_size="120dp"
+        app:dw_icon_size="230dp"
         app:dw_icon_src="@drawable/download_view"
         />
 

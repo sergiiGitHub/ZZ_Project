@@ -8,7 +8,7 @@ import android.view.animation.DecelerateInterpolator;
 /**
  * Created by sergii on 15.11.15.
  */
-public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.AnimatorListener {
+public class FiniteRingAnimation implements Animator.AnimatorListener {
 
     private static final String TAG = FiniteRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1000;
@@ -38,7 +38,6 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
         return viewFiniteListener;
     }
 
-    @Override
     public void start() {
         if ( getViewFiniteListener() == null ){
             Log.e(TAG, "start() called with: view == null ");
@@ -59,7 +58,6 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
         return startAngleRotate;
     }
 
-    @Override
     public void cancel() {
         if ( startAngleRotate != null ){
             startAngleRotate.cancel();
@@ -76,7 +74,6 @@ public class FiniteRingAnimation implements IFiniteRingAnimation, Animator.Anima
         getViewFiniteListener().invalidate();
     }
 
-    @Override
     public void setView(IViewFiniteAnimationListener aViewFiniteListener) {
         resetAnimation();
         this.viewFiniteListener = aViewFiniteListener;
