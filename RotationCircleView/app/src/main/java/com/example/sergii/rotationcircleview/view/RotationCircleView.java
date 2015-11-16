@@ -2,6 +2,8 @@ package com.example.sergii.rotationcircleview.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -143,6 +145,9 @@ public class RotationCircleView extends RelativeLayout {
 
         TextView textView = new TextView( getContext() );
         textView.setText(str);
+        Typeface face = Typeface.createFromAsset(getContext().getAssets(),"Roboto-Medium.ttf");
+        textView.setTypeface(face);
+//        textView.setBackgroundColor(Color.argb(120, 0, 0, 150));
         textView.setTextColor(textColor);
         textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         textView.setTextSize(textSize);
