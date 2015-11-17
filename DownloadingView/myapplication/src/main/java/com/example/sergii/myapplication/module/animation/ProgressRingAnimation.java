@@ -13,12 +13,17 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1300;
     private static final float FINAL_ACTUAL_ANGLE = 360;
-    private static final float PERCENTAGE_TO_ANGLE_COEF = FINAL_ACTUAL_ANGLE / 100;
+    private static final float FINAL_PROGRESS = 100;
+    private static final float PERCENTAGE_TO_ANGLE_COEF = FINAL_ACTUAL_ANGLE / FINAL_PROGRESS;
 
     private ValueAnimator startAngleRotate;
     private IViewProgressAnimationListener viewProgressListener;
     private boolean isAnimationFinish = true;
+    private boolean isCancel = false;
     private float currentAngle;
+    private float progress;
+
+    private Animator.AnimatorListener externalListener;
 
     private void createAnimation() {
         currentAngle = getViewProgressListener().getProgressCurrentAngle();
@@ -57,7 +62,7 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
     }
 
     private void updateView(float aCurrentAngle) {
-        Log.d(TAG, "updateView() called with:aCurrentAngle = " + aCurrentAngle );
+//        Log.d(TAG, "updateView() called with:aCurrentAngle = " + aCurrentAngle );
         getViewProgressListener().setActualAngleProgressAnimation(aCurrentAngle);
         getViewProgressListener().invalidate();
     }
@@ -73,12 +78,13 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
         if ( getViewProgressListener() == null ){
             Log.e(TAG, "start() called with: view == null ");
         }
-
+        isCancel = false;
         getAnimation().start();
         setIsAnimationFinish(false);
     }
 
     public void cancel() {
+        isCancel = true;
         if ( startAngleRotate != null ) {
             startAngleRotate.cancel();
         }
@@ -93,12 +99,19 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
         this.viewProgressListener = aViewFiniteListener;
     }
 
-    public void setProgress(float aValue) {
-        if ( getViewProgressListener() != null ){
-            float sweepAngle = aValue * PERCENTAGE_TO_ANGLE_COEF;
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float aProgress) {
+
+        if ( getViewProgressListener() != null) {
+            this.progress = Math.min( aProgress, FINAL_PROGRESS );
+            float sweepAngle = aProgress * PERCENTAGE_TO_ANGLE_COEF;
+
             if ( isDownloadFinish(sweepAngle ) ){
-                Log.d(TAG, "setProgress :: aValue = " + aValue + "; sweepAngle = " + sweepAngle  );
-                cancel();
+                Log.d(TAG, "setProgress :: aValue = " + aProgress + "; sweepAngle = " + sweepAngle  );
+                startAngleRotate.cancel();
             }
             getViewProgressListener().setSweepAngleProgressValue( sweepAngle );
             getViewProgressListener().invalidate();
@@ -106,27 +119,50 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
     }
 
     private boolean isDownloadFinish(float sweepAngle) {
-        return sweepAngle - FINAL_ACTUAL_ANGLE > 0.f;
+        return sweepAngle - FINAL_ACTUAL_ANGLE >= 0.f;
     }
 
     @Override
     public void onAnimationStart(Animator animation) {
-
+        Log.d(TAG, "onAnimationStart() called with: " + "animation = [" + animation + "]");
+        if (getExternalListener() != null){
+            getExternalListener().onAnimationStart(animation);
+        }
     }
 
     @Override
     public void onAnimationEnd(Animator animation) {
         Log.d(TAG, "onAnimationEnd() called with: " + "animation = [" + animation + "]");
         setIsAnimationFinish( true );
+        if ( !isCancel ){
+            if (getExternalListener() != null){
+                getExternalListener().onAnimationEnd(animation);
+            }
+        }
     }
 
     @Override
     public void onAnimationCancel(Animator animation) {
-
+        Log.d(TAG, "onAnimationCancel() called with: " + "animation = [" + animation + "]");
+        if (getExternalListener() != null){
+            getExternalListener().onAnimationCancel(animation);
+        }
     }
 
     @Override
     public void onAnimationRepeat(Animator animation) {
+        Log.d(TAG, "onAnimationRepeat() called with: " + "animation = [" + animation + "]");
+        if (getExternalListener() != null){
+            getExternalListener().onAnimationRepeat(animation);
+        }
+    }
 
+
+    public Animator.AnimatorListener getExternalListener() {
+        return externalListener;
+    }
+
+    public void setExternalListener(Animator.AnimatorListener externalListener) {
+        this.externalListener = externalListener;
     }
 }

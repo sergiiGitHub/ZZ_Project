@@ -1,20 +1,29 @@
 package com.example.sergii.myapplication.module.animation;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.view.View;
 
 /**
  * Created by sergii on 14.11.15.
  */
-public class AnimationController implements IDownloadController {
+public class AnimationController implements IDownloadController, Animator.AnimatorListener {
 
-    private final FlipInAnimation flipInAnimation;
-    private final FiniteRingAnimation firstRingAnimation;
-    private final ProgressRingAnimation secondRingAnimation;
+    private FlipInAnimation flipInAnimation;
+    private FiniteRingAnimation firstRingAnimation;
+    private ProgressRingAnimation secondRingAnimation;
+    private MoveDownAnimation moveDownAnimation;
+
     public AnimationController( Context aContext ){
+        initAnimation(aContext);
+    }
+
+    private void initAnimation(Context aContext) {
         flipInAnimation = new FlipInAnimation(aContext);
         firstRingAnimation = new FiniteRingAnimation();
         secondRingAnimation = new ProgressRingAnimation();
+        secondRingAnimation.setExternalListener(this);
+        moveDownAnimation = new MoveDownAnimation();
     }
 
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
@@ -25,8 +34,12 @@ public class AnimationController implements IDownloadController {
         secondRingAnimation.setView(aView);
     }
 
-    public void setForegroundView(View aView) {
+    public void setForegroundViewFlipIn(View aView) {
         flipInAnimation.setView(aView);
+    }
+
+    public void setForegroundViewMoveDown(IViewMoveDownAnimationListener aView) {
+        moveDownAnimation.setView(aView);
     }
 
     @Override
@@ -34,6 +47,7 @@ public class AnimationController implements IDownloadController {
         flipInAnimation.cancel();
         firstRingAnimation.cancel();
         secondRingAnimation.cancel();
+        moveDownAnimation.cancel();
     }
 
     @Override
@@ -67,6 +81,30 @@ public class AnimationController implements IDownloadController {
         if ( !secondRingAnimation.isAnimationFinish() ){
             secondRingAnimation.cancel();
         }
+
+        if ( !moveDownAnimation.isAnimationFinish() ){
+            moveDownAnimation.cancel();
+        }
+
     }
 
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        moveDownAnimation.start();
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
 }

@@ -3,12 +3,14 @@
 
     <!-- BACKGROUND VIEW -->
     <color name="dw_bg_color_default">#FFFFFF</color>
-    <color name="dw_bg_ring_color_first_default">#0000FF</color>
-    <color name="dw_bg_ring_color_second_default">#880000FF</color>
-    <dimen name="dw_default_dg_ring_thickness_default">7dp</dimen>
+    <color name="dw_bg_ring_color_first_default">#880000FF</color>
+    <color name="dw_bg_ring_color_second_default">#1976D2</color>
+    <dimen name="dw_default_dg_ring_thickness_default">3dp</dimen>
 
     <!-- ICON VIEW -->
     <drawable name="dw_icon_src_default">@drawable/download_view</drawable>
-    <dimen name="dw_icon_size_default">40dp</dimen>
+    <dimen name="dw_icon_size_x_default">16dp</dimen>
+    <dimen name="dw_icon_size_y_default">20dp</dimen>
+
 
 </resources>

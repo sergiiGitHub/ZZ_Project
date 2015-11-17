@@ -2,12 +2,12 @@ package com.example.sergii.myapplication.module;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.sergii.myapplication.R;
@@ -22,10 +22,9 @@ import com.example.sergii.myapplication.module.foregroud.Foreground;
 public class DownloadingView extends RelativeLayout {
     private static final String TAG = DownloadingView.class.getSimpleName();
 
-    private ImageView iconImageView;
     private AnimationController animationController;
     private Background background;
-    private View foregroundView;
+    private Foreground foregroundView;
 
     public DownloadingView(Context context) {
         super(context);
@@ -57,34 +56,37 @@ public class DownloadingView extends RelativeLayout {
         animationController.setFirstRingView(background);
         animationController.setSecondRingView(background);
 
-        //image view
-        iconImageView = createIconView(typedArray);
-        iconImageView.setVisibility(INVISIBLE);
-        iconImageView.setScaleX(1.2f);
-        iconImageView.setScaleY(1.2f);
-        iconImageView.setAlpha(0.2f);
-        iconImageView.setBackgroundColor(Color.argb(55, 0, 50, 0));
-        addView(iconImageView);
-        animationController.setForegroundView(iconImageView);
-
         foregroundView = createForegroundView(typedArray);
+        animationController.setForegroundViewFlipIn(foregroundView);
+        animationController.setForegroundViewMoveDown(foregroundView);
         addView(foregroundView);
+        foregroundView.setVisibility(INVISIBLE);
 
         typedArray.recycle();
     }
 
-    private View createForegroundView(TypedArray typedArray) {
+    private Foreground createForegroundView(TypedArray typedArray) {
 
-        final Foreground imageView = new Foreground(getContext());
+        Drawable drawable = typedArray.getDrawable(R.styleable.DownloadingView_dw_icon_src);
+        if ( drawable == null ){
+            drawable = getResources().getDrawable(R.drawable.dw_icon_src_default);
+        }
+        Bitmap icon = ((BitmapDrawable) drawable).getBitmap();
 
-        final int size = (int) typedArray.getDimension(R.styleable.DownloadingView_dw_icon_size,
-                getResources().getDimension(R.dimen.dw_icon_size_default));
+        final int size_x = (int) typedArray.getDimension(R.styleable.DownloadingView_dw_icon_size_x,
+                getResources().getDimension(R.dimen.dw_icon_size_x_default));
+        final int size_y = (int) typedArray.getDimension(R.styleable.DownloadingView_dw_icon_size_y,
+                getResources().getDimension(R.dimen.dw_icon_size_y_default));
 
         RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(size, size);
+                new RelativeLayout.LayoutParams(size_x, size_y);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        imageView.setLayoutParams(params);
-        return imageView;
+
+        final Foreground view = new Foreground(getContext());
+        view.setBitmap(icon);
+        view.setLayoutParams(params);
+        view.setLineColor( background.getSecondRingColor() );
+        return view;
     }
 
     private Background createBackground( TypedArray typedArray ) {
@@ -108,26 +110,6 @@ public class DownloadingView extends RelativeLayout {
         background.setRingThickness(bgThickness);
         background.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         return background;
-    }
-
-    private ImageView createIconView(TypedArray typedArray) {
-
-        final ImageView imageView = new ImageView(getContext());
-
-        Drawable drawable = typedArray.getDrawable(R.styleable.DownloadingView_dw_icon_src);
-        if ( drawable == null ){
-            drawable = getResources().getDrawable(R.drawable.dw_icon_src_default);
-        }
-
-        final int size = (int) typedArray.getDimension(R.styleable.DownloadingView_dw_icon_size,
-                getResources().getDimension(R.dimen.dw_icon_size_default));
-        imageView.setImageDrawable(drawable);
-
-        RelativeLayout.LayoutParams params =
-                new RelativeLayout.LayoutParams(size, size);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        imageView.setLayoutParams(params);
-        return imageView;
     }
 
     public IDownloadController getAnimationController() {

@@ -8,6 +8,7 @@
         <attr name="dw_bg_ring_color_second" format="color" />
         <!-- ICON VIEW -->
         <attr name="dw_icon_src" format="integer" />
-        <attr name="dw_icon_size" format="dimension" />
+        <attr name="dw_icon_size_x" format="dimension" />
+        <attr name="dw_icon_size_y" format="dimension" />
     </declare-styleable>
 </resources>

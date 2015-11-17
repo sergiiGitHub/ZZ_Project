@@ -14,13 +14,14 @@
 
     <com.example.sergii.myapplication.module.DownloadingView
         android:id="@+id/downloading_view"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
+        android:layout_width="116dp"
+        android:layout_height="116dp"
         app:dw_bg_color="@color/colorWhite"
         app:dw_bg_ring_color_first="@color/colorBlueHalf"
         app:dw_bg_ring_color_second="@color/colorBlueLight"
-        app:dw_dg_ring_thickness="7dp"
-        app:dw_icon_size="210dp"
+        app:dw_dg_ring_thickness="4dp"
+        app:dw_icon_size_x="46dp"
+        app:dw_icon_size_y="58dp"
         app:dw_icon_src="@drawable/download_view"
         />
 

@@ -18,6 +18,7 @@ public class FlipInAnimation implements Animator.AnimatorListener {
 
     private AnimatorSet flipIn;
     private View view;
+    //TODO Depend on behavior remove
     private Animator flipInCancel;
 
     private boolean isAnimationFinish = true;
@@ -43,6 +44,9 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     }
 
     public void start() {
+        if ( view == null ){
+            return;
+        }
         isAnimationFinish = false;
         view.setVisibility(View.VISIBLE);
 
@@ -52,6 +56,10 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     public void cancel() {
         flipIn.cancel();
         flipInCancel.start();
+        if ( view != null ){
+            view.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
