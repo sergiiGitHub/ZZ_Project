@@ -55,6 +55,7 @@ public class DownloadingView extends RelativeLayout {
         addView(background);
         animationController.setFirstRingView(background);
         animationController.setSecondRingView(background);
+        animationController.setViewChangeColor(background);
 
         foregroundView = createForegroundView(typedArray);
         animationController.setForegroundViewFlipIn(foregroundView);

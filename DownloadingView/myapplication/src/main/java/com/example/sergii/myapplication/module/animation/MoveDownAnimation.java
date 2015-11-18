@@ -5,21 +5,22 @@ import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
 
+import com.example.sergii.myapplication.module.animation.listener.IArrowHideAnimationListener;
+
 /**
  * Created by sergii on 15.11.15.
  */
-public class MoveDownAnimation implements Animator.AnimatorListener {
+public class MoveDownAnimation extends DownloadAnimation {
 
     private static final String TAG = MoveDownAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1000;
-
     private static final int START_SHIFT = 0;
 
     private ValueAnimator startAngleRotate;
     private IViewMoveDownAnimationListener viewMoveDownAnimationListener;
-    private boolean isAnimationFinish = true;
+    private IArrowHideAnimationListener arrowHideAnimationListener;
 
-    private void createAnimation() {
+    protected ValueAnimator createAnimation() {
         startAngleRotate = ValueAnimator.ofFloat(START_SHIFT, getViewFiniteListener().getFinalValue());
         startAngleRotate.setDuration(ANIMATION_DURATION);
         startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
@@ -32,40 +33,16 @@ public class MoveDownAnimation implements Animator.AnimatorListener {
                 }
             }
         });
+        return startAngleRotate;
+    }
+
+    @Override
+    public void resetView() {
+        updateView(START_SHIFT);
     }
 
     private IViewMoveDownAnimationListener getViewFiniteListener(){
         return viewMoveDownAnimationListener;
-    }
-
-    public void start() {
-        if ( getViewFiniteListener() == null ){
-            Log.e(TAG, "start() called with: view == null ");
-        }
-
-        getAnimation().start();
-        setIsAnimationFinish(false);
-    }
-
-    public boolean isAnimationFinish() {
-        return isAnimationFinish;
-    }
-
-    private ValueAnimator getAnimation() {
-        if ( startAngleRotate == null ){
-            createAnimation();
-        }
-        return startAngleRotate;
-    }
-
-    public void cancel() {
-        if ( startAngleRotate != null ){
-            startAngleRotate.cancel();
-        }
-
-        if ( getViewFiniteListener() != null) {
-            updateView(START_SHIFT);
-        }
     }
 
     private void updateView(float aShift) {
@@ -75,40 +52,25 @@ public class MoveDownAnimation implements Animator.AnimatorListener {
     }
 
     public void setView(IViewMoveDownAnimationListener aViewFiniteListener) {
-        resetAnimation();
+        super.setView(aViewFiniteListener);
         this.viewMoveDownAnimationListener = aViewFiniteListener;
-    }
-
-    private void resetAnimation() {
-        if ( startAngleRotate != null ) {
-            startAngleRotate.cancel();
-            startAngleRotate = null;
-        }
-    }
-
-    @Override
-    public void onAnimationStart(Animator animation) {
-
     }
 
     @Override
     public void onAnimationEnd(Animator animation) {
         Log.d(TAG, "onAnimationEnd() called with: " + "animation = [" + animation + "]");
-        setIsAnimationFinish(true);
+        super.onAnimationEnd(animation);
         getViewFiniteListener().setShift(START_SHIFT);
+        if( !isCancel() &&  getArrowHideAnimationListener() != null){
+            getArrowHideAnimationListener().onArrowHideAnimationFinish();
+        }
     }
 
-    private void setIsAnimationFinish(boolean aIsAnimationFinish) {
-        this.isAnimationFinish = aIsAnimationFinish;
+    public void setExternalListener(IArrowHideAnimationListener arrowHideAnimationListener) {
+        this.arrowHideAnimationListener = arrowHideAnimationListener;
     }
 
-    @Override
-    public void onAnimationCancel(Animator animation) {
-
-    }
-
-    @Override
-    public void onAnimationRepeat(Animator animation) {
-
+    public IArrowHideAnimationListener getArrowHideAnimationListener() {
+        return arrowHideAnimationListener;
     }
 }

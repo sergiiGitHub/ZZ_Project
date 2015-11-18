@@ -7,6 +7,7 @@ public interface IDownloadController {
 
     void cancel();
     void start();
+    void reset();
 
     /* update in percent from 0 to 100*/
     void updateProgress(float aValue);

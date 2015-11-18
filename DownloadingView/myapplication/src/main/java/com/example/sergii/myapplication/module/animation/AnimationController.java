@@ -1,29 +1,43 @@
 package com.example.sergii.myapplication.module.animation;
 
-import android.animation.Animator;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
+
+import com.example.sergii.myapplication.module.animation.listener.IAnimationListener;
 
 /**
  * Created by sergii on 14.11.15.
  */
-public class AnimationController implements IDownloadController, Animator.AnimatorListener {
+public class AnimationController implements IDownloadController, IAnimationListener {
 
-    private FlipInAnimation flipInAnimation;
+    private static final String TAG = AnimationController.class.getSimpleName();
+
+    private FlipInAnimator flipInAnimation;
     private FiniteRingAnimation firstRingAnimation;
     private ProgressRingAnimation secondRingAnimation;
     private MoveDownAnimation moveDownAnimation;
+    private ColorChangeAnimation colorChangeAnimation;
 
     public AnimationController( Context aContext ){
         initAnimation(aContext);
     }
 
     private void initAnimation(Context aContext) {
-        flipInAnimation = new FlipInAnimation(aContext);
+//        flipInAnimation = new FlipInAnimation(aContext);
+        flipInAnimation = new FlipInAnimator();
+        flipInAnimation.setExternalListener( this );
+
         firstRingAnimation = new FiniteRingAnimation();
+
         secondRingAnimation = new ProgressRingAnimation();
         secondRingAnimation.setExternalListener(this);
+
         moveDownAnimation = new MoveDownAnimation();
+        moveDownAnimation.setExternalListener(this);
+
+        colorChangeAnimation = new ColorChangeAnimation();
+        colorChangeAnimation.setExternalListener(this);
     }
 
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
@@ -34,12 +48,16 @@ public class AnimationController implements IDownloadController, Animator.Animat
         secondRingAnimation.setView(aView);
     }
 
-    public void setForegroundViewFlipIn(View aView) {
+    public void setForegroundViewFlipIn(IViewAnimationListener aView) {
         flipInAnimation.setView(aView);
     }
 
     public void setForegroundViewMoveDown(IViewMoveDownAnimationListener aView) {
         moveDownAnimation.setView(aView);
+    }
+
+    public void setViewChangeColor( IViewColorChangeAnimationListener view ){
+        colorChangeAnimation.setView(view);
     }
 
     @Override
@@ -48,6 +66,7 @@ public class AnimationController implements IDownloadController, Animator.Animat
         firstRingAnimation.cancel();
         secondRingAnimation.cancel();
         moveDownAnimation.cancel();
+        colorChangeAnimation.cancel();
     }
 
     @Override
@@ -60,8 +79,18 @@ public class AnimationController implements IDownloadController, Animator.Animat
     }
 
     @Override
+    public void reset() {
+        flipInAnimation.resetView();
+        firstRingAnimation.resetView();
+        secondRingAnimation.resetView();
+        moveDownAnimation.resetView();
+        colorChangeAnimation.resetView();
+    }
+
+
+    @Override
     public void updateProgress(float aValue) {
-        secondRingAnimation.setProgress( aValue );
+        secondRingAnimation.setProgress(aValue);
     }
 
     @Override
@@ -85,26 +114,34 @@ public class AnimationController implements IDownloadController, Animator.Animat
         if ( !moveDownAnimation.isAnimationFinish() ){
             moveDownAnimation.cancel();
         }
+        if ( !colorChangeAnimation.isAnimationFinish() ) {
+            colorChangeAnimation.cancel();
+        }
+    }
+
+    @Override
+    public void onArrowHideAnimationFinish() {
+        Log.d(TAG, "onArrowHideAnimationFinish() called with: ");
+        flipInAnimation.getViewAnimationListener().setVisibility(View.INVISIBLE);
+        colorChangeAnimation.getView().setDrawRing( false );
+        colorChangeAnimation.start();
 
     }
 
     @Override
-    public void onAnimationStart(Animator animation) {
-
+    public void onArrowShowAnimationFinish() {
+        Log.d(TAG, "onArrowShowAnimationFinish() called with: ");
     }
 
     @Override
-    public void onAnimationEnd(Animator animation) {
+    public void onColorChangeAnimationFinish() {
+        Log.d(TAG, "onColorChangeAnimationFinish() called with: " );
+        
+    }
+
+    @Override
+    public void onProgressAnimationFinish() {
+        Log.d(TAG, "onProgressAnimationFinish() called with: ");
         moveDownAnimation.start();
-    }
-
-    @Override
-    public void onAnimationCancel(Animator animation) {
-
-    }
-
-    @Override
-    public void onAnimationRepeat(Animator animation) {
-
     }
 }

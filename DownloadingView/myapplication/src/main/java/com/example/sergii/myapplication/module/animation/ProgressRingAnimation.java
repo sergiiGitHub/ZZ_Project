@@ -5,10 +5,12 @@ import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
+import com.example.sergii.myapplication.module.animation.listener.IProgressAnimationListener;
+
 /**
  * Created by sergii on 15.11.15.
  */
-public class ProgressRingAnimation implements Animator.AnimatorListener {
+public class ProgressRingAnimation extends DownloadAnimation {
 
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1300;
@@ -16,18 +18,14 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
     private static final float FINAL_PROGRESS = 100;
     private static final float PERCENTAGE_TO_ANGLE_COEF = FINAL_ACTUAL_ANGLE / FINAL_PROGRESS;
 
-    private ValueAnimator startAngleRotate;
     private IViewProgressAnimationListener viewProgressListener;
-    private boolean isAnimationFinish = true;
-    private boolean isCancel = false;
     private float currentAngle;
     private float progress;
+    private IProgressAnimationListener progressAnimationListener;
 
-    private Animator.AnimatorListener externalListener;
-
-    private void createAnimation() {
+    protected ValueAnimator createAnimation() {
         currentAngle = getViewProgressListener().getProgressCurrentAngle();
-        startAngleRotate = ValueAnimator.ofFloat(currentAngle, currentAngle + FINAL_ACTUAL_ANGLE);
+        ValueAnimator startAngleRotate = ValueAnimator.ofFloat(currentAngle, currentAngle + FINAL_ACTUAL_ANGLE);
         startAngleRotate.setDuration(ANIMATION_DURATION);
         startAngleRotate.setRepeatCount(ValueAnimator.INFINITE);
         startAngleRotate.setInterpolator(new LinearInterpolator());
@@ -40,62 +38,26 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
                 }
             }
         });
+        return startAngleRotate;
     }
 
-    private void setIsAnimationFinish(boolean aIsAnimationFinish) {
-        this.isAnimationFinish = aIsAnimationFinish;
+    @Override
+    public void resetView() {
+        getViewProgressListener().setSweepAngleProgressValue(0);
+        updateView(currentAngle);
     }
 
     private IViewProgressAnimationListener getViewProgressListener(){
         return viewProgressListener;
     }
 
-    public boolean isAnimationFinish() {
-        return isAnimationFinish;
-    }
-
-    private ValueAnimator getAnimation() {
-        if ( startAngleRotate == null ){
-            createAnimation();
-        }
-        return startAngleRotate;
-    }
-
     private void updateView(float aCurrentAngle) {
-//        Log.d(TAG, "updateView() called with:aCurrentAngle = " + aCurrentAngle );
         getViewProgressListener().setActualAngleProgressAnimation(aCurrentAngle);
         getViewProgressListener().invalidate();
     }
 
-    private void resetAnimation() {
-        if ( startAngleRotate != null ) {
-            startAngleRotate.cancel();
-            startAngleRotate = null;
-        }
-    }
-
-    public void start() {
-        if ( getViewProgressListener() == null ){
-            Log.e(TAG, "start() called with: view == null ");
-        }
-        isCancel = false;
-        getAnimation().start();
-        setIsAnimationFinish(false);
-    }
-
-    public void cancel() {
-        isCancel = true;
-        if ( startAngleRotate != null ) {
-            startAngleRotate.cancel();
-        }
-        if ( getViewProgressListener() != null ){
-            getViewProgressListener().setSweepAngleProgressValue(0);
-            updateView(currentAngle);
-        }
-    }
-
     public void setView(IViewProgressAnimationListener aViewFiniteListener) {
-        resetAnimation();
+        super.setView(aViewFiniteListener);
         this.viewProgressListener = aViewFiniteListener;
     }
 
@@ -111,7 +73,7 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
 
             if ( isDownloadFinish(sweepAngle ) ){
                 Log.d(TAG, "setProgress :: aValue = " + aProgress + "; sweepAngle = " + sweepAngle  );
-                startAngleRotate.cancel();
+                getAnimation().cancel();
             }
             getViewProgressListener().setSweepAngleProgressValue( sweepAngle );
             getViewProgressListener().invalidate();
@@ -122,47 +84,20 @@ public class ProgressRingAnimation implements Animator.AnimatorListener {
         return sweepAngle - FINAL_ACTUAL_ANGLE >= 0.f;
     }
 
-    @Override
-    public void onAnimationStart(Animator animation) {
-        Log.d(TAG, "onAnimationStart() called with: " + "animation = [" + animation + "]");
-        if (getExternalListener() != null){
-            getExternalListener().onAnimationStart(animation);
-        }
-    }
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        Log.d(TAG, "onAnimationEnd() called with: " + "animation = [" + animation + "]");
-        setIsAnimationFinish( true );
-        if ( !isCancel ){
-            if (getExternalListener() != null){
-                getExternalListener().onAnimationEnd(animation);
-            }
+        super.onAnimationEnd(animation);
+        if( !isCancel() &&  getProgressAnimationListener() != null){
+            getProgressAnimationListener().onProgressAnimationFinish();
         }
     }
 
-    @Override
-    public void onAnimationCancel(Animator animation) {
-        Log.d(TAG, "onAnimationCancel() called with: " + "animation = [" + animation + "]");
-        if (getExternalListener() != null){
-            getExternalListener().onAnimationCancel(animation);
-        }
+    public void setExternalListener(IProgressAnimationListener progressAnimationListener) {
+        this.progressAnimationListener = progressAnimationListener;
     }
 
-    @Override
-    public void onAnimationRepeat(Animator animation) {
-        Log.d(TAG, "onAnimationRepeat() called with: " + "animation = [" + animation + "]");
-        if (getExternalListener() != null){
-            getExternalListener().onAnimationRepeat(animation);
-        }
-    }
-
-
-    public Animator.AnimatorListener getExternalListener() {
-        return externalListener;
-    }
-
-    public void setExternalListener(Animator.AnimatorListener externalListener) {
-        this.externalListener = externalListener;
+    public IProgressAnimationListener getProgressAnimationListener() {
+        return progressAnimationListener;
     }
 }

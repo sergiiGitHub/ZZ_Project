@@ -7,11 +7,14 @@ import android.content.Context;
 import android.view.View;
 
 import com.example.sergii.myapplication.R;
+import com.example.sergii.myapplication.module.animation.listener.IArrowShowAnimationListener;
 
 
 /**
  * Created by sergii on 14.11.15.
  */
+// TODO: 18.11.15 remove
+// TODO: 18.11.15 extends from DownloadAnimator
 public class FlipInAnimation implements Animator.AnimatorListener {
 
     private static final String TAG = FlipInAnimation.class.getSimpleName();
@@ -22,6 +25,7 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     private Animator flipInCancel;
 
     private boolean isAnimationFinish = true;
+    private IArrowShowAnimationListener arrowShowAnimationListener;
 
     public FlipInAnimation(Context aContext){
         initAnimation(aContext);
@@ -85,5 +89,6 @@ public class FlipInAnimation implements Animator.AnimatorListener {
     public boolean isAnimationFinish() {
         return isAnimationFinish;
     }
+
 }
 

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
 
+import com.example.sergii.myapplication.module.animation.IViewColorChangeAnimationListener;
 import com.example.sergii.myapplication.module.animation.IViewFiniteAnimationListener;
 import com.example.sergii.myapplication.module.animation.IViewProgressAnimationListener;
 
@@ -15,7 +16,7 @@ import com.example.sergii.myapplication.module.animation.IViewProgressAnimationL
  */
 public class Background extends View implements IBackground,
         IViewFiniteAnimationListener,
-        IViewProgressAnimationListener {
+        IViewProgressAnimationListener, IViewColorChangeAnimationListener {
 
     private static final float INITIAL_ANGLE = -90;
     private static final float BORDER_COEF = 1.2f;
@@ -67,7 +68,6 @@ public class Background extends View implements IBackground,
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
         canvas.drawArc(rectRingBound, INITIAL_ANGLE, finiteSweepAngle, false, drawPaintFirstRing);
-        // TODO: 15.11.15 implement animation
         canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
     }
 
@@ -151,6 +151,28 @@ public class Background extends View implements IBackground,
     public float getProgressCurrentAngle() {
         return INITIAL_ANGLE;
     }
+
+    @Override
+    public int getFromColor() {
+        return getCircleColor();
+    }
+
+    @Override
+    public int getToColor() {
+        // TODO: 18.11.15 change
+        return Color.RED;
+    }
+
+    @Override
+    public void setBackgroundColor(Integer aColor) {
+        setCircleColor(aColor);
+    }
+
+    @Override
+    public void setDrawRing(boolean aIsDrawRings) {
+
+    }
+
 }
 
 
