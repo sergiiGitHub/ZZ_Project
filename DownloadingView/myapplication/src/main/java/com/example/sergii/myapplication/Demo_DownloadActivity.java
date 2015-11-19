@@ -50,7 +50,7 @@ public class Demo_DownloadActivity extends AppCompatActivity implements View.OnC
         private final Runnable runnebleUpdate;
 
         int value = 0;
-        int delta = 2;
+        int delta = 3;
         private boolean isInterrupted = false;
 
         public HandlerWrapper( DownloadingView aView ) {

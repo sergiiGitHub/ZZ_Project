@@ -20,7 +20,7 @@ public class ProgressRingAnimation extends DownloadAnimation {
 
     private IViewProgressAnimationListener viewProgressListener;
     private float currentAngle;
-    private float progress;
+    private float progress = 0;
     private IProgressAnimationListener progressAnimationListener;
 
     protected ValueAnimator createAnimation() {

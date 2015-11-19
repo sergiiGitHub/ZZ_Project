@@ -11,20 +11,21 @@ import com.example.sergii.myapplication.module.animation.listener.IColorChangeAn
  */
 public class ColorChangeAnimation extends DownloadAnimation {
 
-    private static final long ANIMATION_DURATION = 500;
+    private static final long ANIMATION_DURATION = 1000;
     private IViewColorChangeAnimationListener viewColorChangeAnimationListener;
-    private int initialColor = -1;
+    private int initialColor = Integer.MIN_VALUE;
     private IColorChangeAnimationListener colorChangeAnimationListener;
 
     @Override
     protected ValueAnimator createAnimation() {
 
-        initialColor = viewColorChangeAnimationListener.getFromColor();
+        initialColor = viewColorChangeAnimationListener.getStartColor();
         ValueAnimator anim = new ValueAnimator();
-        anim.setIntValues(initialColor, viewColorChangeAnimationListener.getToColor());
+        anim.setIntValues(initialColor, viewColorChangeAnimationListener.getFinalColor());
         anim.setEvaluator(new ArgbEvaluator());
+        anim.setStartDelay(300);
+        anim.addListener(this);
         anim.setDuration(ANIMATION_DURATION);
-        // TODO: 18.11.15 implement in abstract
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -57,15 +58,18 @@ public class ColorChangeAnimation extends DownloadAnimation {
         super.onAnimationEnd(animation);
         if( !isCancel() &&  colorChangeAnimationListener != null){
             colorChangeAnimationListener.onColorChangeAnimationFinish();
-            resetView();
         }
     }
 
     @Override
     public void resetView() {
-        if ( initialColor != -1 ){
+        if ( isInitColorValid() ){
             viewColorChangeAnimationListener.setBackgroundColor(initialColor);
         }
+    }
+
+    private boolean isInitColorValid() {
+        return initialColor != Integer.MIN_VALUE;
     }
 
     public void setExternalListener(IColorChangeAnimationListener colorChangeAnimationListener) {

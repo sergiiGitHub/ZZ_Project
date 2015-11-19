@@ -17,6 +17,7 @@
         android:layout_width="116dp"
         android:layout_height="116dp"
         app:dw_bg_color="@color/colorWhite"
+        app:dw_bg_color_final="@color/dw_bg_color_final_default"
         app:dw_bg_ring_color_first="@color/colorBlueHalf"
         app:dw_bg_ring_color_second="@color/colorBlueLight"
         app:dw_dg_ring_thickness="4dp"

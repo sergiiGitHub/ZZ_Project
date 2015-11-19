@@ -3,6 +3,7 @@ package com.example.sergii.myapplication.module.animation;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.util.Log;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.example.sergii.myapplication.module.animation.listener.IArrowHideAnimationListener;
@@ -13,7 +14,7 @@ import com.example.sergii.myapplication.module.animation.listener.IArrowHideAnim
 public class MoveDownAnimation extends DownloadAnimation {
 
     private static final String TAG = MoveDownAnimation.class.getSimpleName();
-    private static final long ANIMATION_DURATION = 1000;
+    private static final long ANIMATION_DURATION = 500;
     private static final int START_SHIFT = 0;
 
     private ValueAnimator startAngleRotate;
@@ -23,7 +24,7 @@ public class MoveDownAnimation extends DownloadAnimation {
     protected ValueAnimator createAnimation() {
         startAngleRotate = ValueAnimator.ofFloat(START_SHIFT, getViewFiniteListener().getFinalValue());
         startAngleRotate.setDuration(ANIMATION_DURATION);
-        startAngleRotate.setInterpolator(new DecelerateInterpolator(2));
+        startAngleRotate.setInterpolator(new AccelerateInterpolator(2));
         startAngleRotate.addListener(this);
         startAngleRotate.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

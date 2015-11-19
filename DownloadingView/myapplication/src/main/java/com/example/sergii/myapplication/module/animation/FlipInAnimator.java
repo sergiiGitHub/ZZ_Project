@@ -12,7 +12,7 @@ import com.example.sergii.myapplication.module.animation.listener.IArrowShowAnim
  */
 public class FlipInAnimator extends DownloadAnimation {
 
-    private static final long ANIMATION_DURATION = 1000;
+    private static final long ANIMATION_DURATION = 500;
     private static final String ROTATION_Y = "rotationY";
     private static final float START_VALUE = -90;
     private static final float END_VALUE = 0;
@@ -21,10 +21,10 @@ public class FlipInAnimator extends DownloadAnimation {
 
     @Override
     protected ValueAnimator createAnimation() {
-        ValueAnimator objectAnimator = ObjectAnimator.ofFloat(getViewAnimationListener() ,
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(getViewAnimationListener() ,
                 ROTATION_Y, START_VALUE, END_VALUE );
         objectAnimator.setObjectValues(objectAnimator);
-        objectAnimator.setDuration( ANIMATION_DURATION );
+        objectAnimator.setDuration(ANIMATION_DURATION);
         return objectAnimator;
     }
 
@@ -55,7 +55,5 @@ public class FlipInAnimator extends DownloadAnimation {
     public IArrowShowAnimationListener getArrowShowAnimationListener() {
         return arrowShowAnimationListener;
     }
-
-
 
 }

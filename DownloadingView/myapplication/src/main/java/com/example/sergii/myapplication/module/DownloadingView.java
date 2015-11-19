@@ -7,7 +7,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.example.sergii.myapplication.R;
@@ -95,6 +94,9 @@ public class DownloadingView extends RelativeLayout {
         final int bgCircleColor = typedArray.getColor(R.styleable.DownloadingView_dw_bg_color,
                 getResources().getColor(R.color.dw_bg_color_default));
 
+        final int bgCircleColorFinal = typedArray.getColor(R.styleable.DownloadingView_dw_bg_color_final,
+                getResources().getColor(R.color.dw_bg_color_final_default));
+
         final int bgRingColorFirst = typedArray.getColor(R.styleable.DownloadingView_dw_bg_ring_color_first,
                 getResources().getColor(R.color.dw_bg_ring_color_first_default));
 
@@ -106,6 +108,7 @@ public class DownloadingView extends RelativeLayout {
 
         Background background = new Background( getContext() );
         background.setCircleColor(bgCircleColor);
+        background.setCircleFinalColor(bgCircleColorFinal);
         background.setFirstRingColor(bgRingColorFirst);
         background.setSecondRingColor(bgRingColorSecond);
         background.setRingThickness(bgThickness);

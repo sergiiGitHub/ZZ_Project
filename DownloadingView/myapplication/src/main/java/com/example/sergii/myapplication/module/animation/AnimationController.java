@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
-import com.example.sergii.myapplication.module.animation.listener.IAnimationListener;
+import com.example.sergii.myapplication.module.animation.listener.IDownloadAnimationListener;
 
 /**
  * Created by sergii on 14.11.15.
  */
-public class AnimationController implements IDownloadController, IAnimationListener {
+public class AnimationController implements IDownloadController, IDownloadAnimationListener {
 
     private static final String TAG = AnimationController.class.getSimpleName();
 
@@ -18,6 +18,7 @@ public class AnimationController implements IDownloadController, IAnimationListe
     private ProgressRingAnimation secondRingAnimation;
     private MoveDownAnimation moveDownAnimation;
     private ColorChangeAnimation colorChangeAnimation;
+    private IDownloadAnimationListener externalDownloadAnimationListener;
 
     public AnimationController( Context aContext ){
         initAnimation(aContext);
@@ -72,6 +73,7 @@ public class AnimationController implements IDownloadController, IAnimationListe
     @Override
     public void start() {
         cancelAllRunningAnimation();
+        colorChangeAnimation.getView().setDrawRing(true);
 
         flipInAnimation.start();
         firstRingAnimation.start();
@@ -86,7 +88,6 @@ public class AnimationController implements IDownloadController, IAnimationListe
         moveDownAnimation.resetView();
         colorChangeAnimation.resetView();
     }
-
 
     @Override
     public void updateProgress(float aValue) {
@@ -116,6 +117,8 @@ public class AnimationController implements IDownloadController, IAnimationListe
         }
         if ( !colorChangeAnimation.isAnimationFinish() ) {
             colorChangeAnimation.cancel();
+        } else {
+            colorChangeAnimation.resetView();
         }
     }
 
@@ -123,25 +126,44 @@ public class AnimationController implements IDownloadController, IAnimationListe
     public void onArrowHideAnimationFinish() {
         Log.d(TAG, "onArrowHideAnimationFinish() called with: ");
         flipInAnimation.getViewAnimationListener().setVisibility(View.INVISIBLE);
-        colorChangeAnimation.getView().setDrawRing( false );
-        colorChangeAnimation.start();
-
+        colorChangeAnimation.getView().setDrawRing(false);
+        if ( getExternalDownloadAnimationListener() != null ){
+            getExternalDownloadAnimationListener().onArrowHideAnimationFinish();
+        }
     }
 
     @Override
     public void onArrowShowAnimationFinish() {
         Log.d(TAG, "onArrowShowAnimationFinish() called with: ");
+        if ( getExternalDownloadAnimationListener() != null ){
+            getExternalDownloadAnimationListener().onArrowShowAnimationFinish();
+        }
     }
 
     @Override
     public void onColorChangeAnimationFinish() {
-        Log.d(TAG, "onColorChangeAnimationFinish() called with: " );
-        
+        Log.d(TAG, "onColorChangeAnimationFinish() called with: ");
+        if ( getExternalDownloadAnimationListener() != null ){
+            getExternalDownloadAnimationListener().onColorChangeAnimationFinish();
+        }
     }
 
     @Override
     public void onProgressAnimationFinish() {
         Log.d(TAG, "onProgressAnimationFinish() called with: ");
+
         moveDownAnimation.start();
+        colorChangeAnimation.start();
+        if ( getExternalDownloadAnimationListener() != null ){
+            getExternalDownloadAnimationListener().onProgressAnimationFinish();
+        }
+    }
+
+    public IDownloadAnimationListener getExternalDownloadAnimationListener() {
+        return externalDownloadAnimationListener;
+    }
+
+    public void setExternalDownloadAnimationListener(IDownloadAnimationListener externalDownloadAnimationListener) {
+        this.externalDownloadAnimationListener = externalDownloadAnimationListener;
     }
 }

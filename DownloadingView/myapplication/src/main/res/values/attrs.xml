@@ -4,6 +4,7 @@
         <!-- BACKGROUND VIEW -->
         <attr name="dw_dg_ring_thickness" format="dimension" />
         <attr name="dw_bg_color" format="color" />
+        <attr name="dw_bg_color_final" format="color" />
         <attr name="dw_bg_ring_color_first" format="color" />
         <attr name="dw_bg_ring_color_second" format="color" />
         <!-- ICON VIEW -->

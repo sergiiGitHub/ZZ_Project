@@ -31,6 +31,8 @@ public class Background extends View implements IBackground,
     private float finiteSweepAngle = 0;
     private float progressSweepAngle = 0;
     private float progressActualAngle = INITIAL_ANGLE ;
+    private boolean isDrawingRing;
+    private int circleFinalColor;
 
     public Background(Context context) {
         super(context);
@@ -67,8 +69,10 @@ public class Background extends View implements IBackground,
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
-        canvas.drawArc(rectRingBound, INITIAL_ANGLE, finiteSweepAngle, false, drawPaintFirstRing);
-        canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
+        if( isDrawingRing ) {
+            canvas.drawArc(rectRingBound, INITIAL_ANGLE, finiteSweepAngle, false, drawPaintFirstRing);
+            canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
+        }
     }
 
     @Override
@@ -153,14 +157,13 @@ public class Background extends View implements IBackground,
     }
 
     @Override
-    public int getFromColor() {
+    public int getStartColor() {
         return getCircleColor();
     }
 
     @Override
-    public int getToColor() {
-        // TODO: 18.11.15 change
-        return Color.RED;
+    public int getFinalColor() {
+        return this.circleFinalColor;
     }
 
     @Override
@@ -168,9 +171,14 @@ public class Background extends View implements IBackground,
         setCircleColor(aColor);
     }
 
+    public void setCircleFinalColor(int circleFinalColor) {
+        this.circleFinalColor = circleFinalColor;
+    }
+
+
     @Override
     public void setDrawRing(boolean aIsDrawRings) {
-
+        this.isDrawingRing = aIsDrawRings;
     }
 
 }

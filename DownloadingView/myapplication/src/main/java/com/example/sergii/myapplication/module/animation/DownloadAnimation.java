@@ -38,6 +38,7 @@ public abstract class DownloadAnimation implements Animator.AnimatorListener {
     private void resetAnimation() {
         if (valueAnimator != null) {
             valueAnimator.cancel();
+            valueAnimator.removeAllListeners();
             valueAnimator = null;
         }
     }
