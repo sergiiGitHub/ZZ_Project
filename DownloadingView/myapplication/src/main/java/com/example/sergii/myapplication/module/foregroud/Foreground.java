@@ -46,12 +46,13 @@ public class Foreground extends View implements IViewMoveDownAnimationListener {
     private void initPaint() {
         drawPaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         drawPaintLine.setColor(Color.BLUE);
+        drawPaintLine.setAntiAlias(true);
+        drawPaintLine.setDither(true);
 
-        drawPaintArrow = new Paint();
+        drawPaintArrow = new Paint(Paint.ANTI_ALIAS_FLAG);
         drawPaintArrow.setAntiAlias(true);
         drawPaintArrow.setFilterBitmap(true);
-        drawPaintArrow.setDither(false);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        drawPaintArrow.setDither(true);
     }
 
     private void updateRect(int w, int h) {
