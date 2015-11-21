@@ -9,7 +9,7 @@ public interface IUploadingAnimationController {
     void start();
     void reset();
 
-    /* update in percent from 0 to 100*/
+    /** update in percent from 0 to 100*/
     void updateProgress(float aValue);
 
     boolean isProgressFinish();
