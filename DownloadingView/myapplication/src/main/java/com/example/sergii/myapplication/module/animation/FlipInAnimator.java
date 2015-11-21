@@ -25,6 +25,7 @@ public class FlipInAnimator extends DownloadAnimation {
                 ROTATION_Y, START_VALUE, END_VALUE );
         objectAnimator.setObjectValues(objectAnimator);
         objectAnimator.setDuration(ANIMATION_DURATION);
+
         return objectAnimator;
     }
 

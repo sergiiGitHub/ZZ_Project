@@ -20,6 +20,8 @@ public class Foreground extends View implements IViewMoveDownAnimationListener {
     private static final float ICON_HEIGHT_COEF = 0.8f;
     private static final float LINE_Y_POS = 0.9f;
     private Paint drawPaintLine;
+
+    private Paint drawPaintArrow;
     private Rect rectLine;
     private Rect rectIconDestination;
     private Rect rectIconSource;
@@ -32,7 +34,7 @@ public class Foreground extends View implements IViewMoveDownAnimationListener {
         super(context);
 
         initRect();
-        initLinePaint();
+        initPaint();
     }
 
     private void initRect() {
@@ -41,10 +43,15 @@ public class Foreground extends View implements IViewMoveDownAnimationListener {
         rectIconSource = new Rect(0,0,0,0);
     }
 
-    private void initLinePaint() {
-        drawPaintLine = new Paint();
+    private void initPaint() {
+        drawPaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         drawPaintLine.setColor(Color.BLUE);
-        drawPaintLine.setAntiAlias(true);
+
+        drawPaintArrow = new Paint();
+        drawPaintArrow.setAntiAlias(true);
+        drawPaintArrow.setFilterBitmap(true);
+        drawPaintArrow.setDither(false);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     private void updateRect(int w, int h) {
@@ -85,7 +92,7 @@ public class Foreground extends View implements IViewMoveDownAnimationListener {
         super.onDraw(canvas);
         canvas.drawRect(rectLine, drawPaintLine);
         if ( bitmap != null ){
-            canvas.drawBitmap(bitmap, rectIconSource, rectIconDestination, null);
+            canvas.drawBitmap(bitmap, rectIconSource, rectIconDestination, drawPaintArrow);
         }
     }
 
