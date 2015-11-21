@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="#dddddd"
+    tools:context=".UploadingDemoActivity">
+
+    <com.example.sergii.uploadinganimation.UploadingView
+        android:id="@+id/upload_view"
+        android:layout_width="116dp"
+        android:layout_height="116dp">
+        app:upload_bg_color="@color/upload_bg_color_default"
+        app:upload_bg_ring_color_first="@color/upload_bg_ring_color_first_default"
+        app:upload_bg_ring_color_second="@color/upload_bg_ring_color_second_default"
+        app:upload_dg_ring_thickness="4dp"
+    </com.example.sergii.uploadinganimation.UploadingView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start animation"
+        android:id="@+id/start_animation" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cencel Animation"
+        android:id="@+id/cancel_animation" />
+
+</LinearLayout>
