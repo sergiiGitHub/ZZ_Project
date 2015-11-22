@@ -11,7 +11,7 @@ import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IVi
 /**
  * Created by sergii on 15.11.15.
  */
-public class ProgressRingAnimation extends Animation {
+public class ProgressRingAnimation extends UploadAnimation {
 
     private static final String TAG = ProgressRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1300;

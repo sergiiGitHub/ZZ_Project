@@ -55,6 +55,7 @@ public class UploadingView extends RelativeLayout{
 
         uploadImageView = createIconView( typedArray );
         addView(uploadImageView);
+        animationController.setSpiralView( uploadImageView );
 
         typedArray.recycle();
     }

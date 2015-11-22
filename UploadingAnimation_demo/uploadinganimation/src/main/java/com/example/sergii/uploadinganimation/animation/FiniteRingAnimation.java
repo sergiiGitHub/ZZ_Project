@@ -9,7 +9,7 @@ import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IVi
 /**
  * Created by sergii on 15.11.15.
  */
-public class FiniteRingAnimation extends Animation {
+public class FiniteRingAnimation extends UploadAnimation {
 
     private static final String TAG = FiniteRingAnimation.class.getSimpleName();
     private static final long ANIMATION_DURATION = 1000;

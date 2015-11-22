@@ -9,9 +9,9 @@ import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IVi
 /**
  * Created by sergii on 18.11.15.
  */
-public abstract class Animation implements Animator.AnimatorListener {
+public abstract class UploadAnimation implements Animator.AnimatorListener {
 
-    private static final String TAG = Animation.class.getSimpleName();
+    private static final String TAG = UploadAnimation.class.getSimpleName();
 
     private ValueAnimator valueAnimator;
     private IViewAnimationListener viewFiniteListener;

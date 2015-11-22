@@ -1,6 +1,7 @@
 package com.example.sergii.uploadinganimation.animation;
 
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.example.sergii.uploadinganimation.animation.animationlistener.UploadAnimationListener;
 import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewFiniteAnimationListener;
@@ -18,6 +19,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
     private ProgressRingAnimation secondRingAnimation;
 
     private UploadAnimationListener externalUploadAnimationListener;
+    private SpiralRotation spiralAnimation;
 
 
     public AnimationController(){
@@ -31,6 +33,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
         secondRingAnimation = new ProgressRingAnimation();
         secondRingAnimation.setExternalListener(this);
 
+        spiralAnimation = new SpiralRotation();
     }
 
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
@@ -45,6 +48,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
     public void cancel() {
         firstRingAnimation.cancel();
         secondRingAnimation.cancel();
+        spiralAnimation.cancel();
     }
 
     @Override
@@ -53,12 +57,14 @@ public class AnimationController implements IUploadingAnimationController, Uploa
 
         firstRingAnimation.start();
         secondRingAnimation.start();
+        spiralAnimation.start();
     }
 
     @Override
     public void reset() {
         firstRingAnimation.resetView();
         secondRingAnimation.resetView();
+        spiralAnimation.resetView();
     }
 
     @Override
@@ -98,5 +104,9 @@ public class AnimationController implements IUploadingAnimationController, Uploa
 
     public void setExternalUploadAnimationListener(UploadAnimationListener externalUploadAnimationListener) {
         this.externalUploadAnimationListener = externalUploadAnimationListener;
+    }
+
+    public void setSpiralView(ImageView aView) {
+        spiralAnimation.setView( aView );
     }
 }
