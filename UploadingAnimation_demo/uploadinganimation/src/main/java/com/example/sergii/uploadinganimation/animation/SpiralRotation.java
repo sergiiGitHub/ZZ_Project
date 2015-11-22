@@ -1,8 +1,11 @@
 package com.example.sergii.uploadinganimation.animation;
 
 import android.animation.ValueAnimator;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
@@ -17,7 +20,8 @@ import android.widget.ImageView;
  */
 public class SpiralRotation {
 
-    private static final long ANIMATION_DURATION = 1000;
+    private static final long ANIMATION_DURATION = 800;
+    private static final String TAG = SpiralRotation.class.getSimpleName();
     private AnimationSet animSet;
     private ImageView view;
     private TranslateAnimation translateAnimation;
@@ -32,28 +36,33 @@ public class SpiralRotation {
         animSet = new AnimationSet(true);
         AccelerateInterpolator accelerate = new AccelerateInterpolator();
         translateAnimation = new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT, -.7f, Animation.RELATIVE_TO_PARENT, 0.f,
-                        Animation.RELATIVE_TO_PARENT, 0.f, Animation.RELATIVE_TO_PARENT, 0.f
+                        Animation.RELATIVE_TO_PARENT, -0.9f, Animation.RELATIVE_TO_PARENT, .0f,
+                        Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_PARENT, .0f
                 );
         translateAnimation.setInterpolator(accelerate);
         translateAnimation.setDuration(ANIMATION_DURATION);
-//        animSet.addAnimation(translateAnimation);
+        animSet.addAnimation(translateAnimation);
 
-        ScaleAnimation scale = new ScaleAnimation(0.2f, 1.f, 0.2f, 1.f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scale.setDuration(ANIMATION_DURATION);
-        scale.setDuration(ANIMATION_DURATION);
-//        scale.setInterpolator(new AccelerateInterpolator(3));
+        ScaleAnimation scale = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        float durationCoef = .6f;
+        float delayCoef = 1 - durationCoef;
+        scale.setDuration((long) (ANIMATION_DURATION * durationCoef));
+        scale.setStartOffset((long) (ANIMATION_DURATION * delayCoef));
+        scale.setInterpolator(new AccelerateInterpolator(8));
         animSet.addAnimation(scale);
 
-        rotateAnimation = new RotateAnimation(-320, 0f,
-                Animation.RELATIVE_TO_SELF, .55f,
-                Animation.RELATIVE_TO_SELF, .8f);
+        rotateAnimation = new RotateAnimation(-270, 0f,
+                Animation.RELATIVE_TO_SELF, .65f,
+                Animation.RELATIVE_TO_SELF, .65f);
         rotateAnimation.setDuration(ANIMATION_DURATION);
-        rotateAnimation.setDuration(ANIMATION_DURATION);
-//        rotateAnimation.setInterpolator(new AccelerateInterpolator(3));
+        rotateAnimation.setInterpolator(new DecelerateInterpolator(2));
         animSet.addAnimation(rotateAnimation);
 
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.f, 1.0f);
+        alphaAnimation.setDuration(ANIMATION_DURATION);
+        animSet.addAnimation(alphaAnimation);
 
         animSet.setFillAfter(true);
 
@@ -64,13 +73,19 @@ public class SpiralRotation {
     }
 
     public void cancel() {
-        
+        Log.d(TAG, "cancel() called with: " + "");
+        if ( view != null ){
+            view.setVisibility(View.INVISIBLE);
+        }
+        animSet.cancel();
+
     }
 
     public void start() {
         if ( view == null ){
             return;
         }
+        view.setVisibility(View.VISIBLE);
         view.startAnimation(animSet);
     }
 
