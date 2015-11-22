@@ -38,6 +38,7 @@ public class AnimationController implements IDownloadController, IDownloadAnimat
         moveDownAnimation.setExternalListener(this);
 
         colorChangeAnimation = new ColorChangeAnimation();
+        colorChangeAnimation.setDelayTime( moveDownAnimation.getAnimationDuration() );
         colorChangeAnimation.setExternalListener(this);
     }
 

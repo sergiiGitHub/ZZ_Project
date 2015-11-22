@@ -12,8 +12,11 @@ import com.example.sergii.myapplication.module.animation.listener.IColorChangeAn
 public class ColorChangeAnimation extends DownloadAnimation {
 
     private static final long ANIMATION_DURATION = 1000;
-    private IViewColorChangeAnimationListener viewColorChangeAnimationListener;
+    private static final long ANIMATION_START_DELAY_DEFAULT = 300;
+
     private int initialColor = Integer.MIN_VALUE;
+    private long animStartDelay = ANIMATION_START_DELAY_DEFAULT;
+    private IViewColorChangeAnimationListener viewColorChangeAnimationListener;
     private IColorChangeAnimationListener colorChangeAnimationListener;
 
     @Override
@@ -23,7 +26,7 @@ public class ColorChangeAnimation extends DownloadAnimation {
         ValueAnimator anim = new ValueAnimator();
         anim.setIntValues(initialColor, viewColorChangeAnimationListener.getFinalColor());
         anim.setEvaluator(new ArgbEvaluator());
-        anim.setStartDelay(300);
+        anim.setStartDelay(animStartDelay);
         anim.addListener(this);
         anim.setDuration(ANIMATION_DURATION);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -74,5 +77,9 @@ public class ColorChangeAnimation extends DownloadAnimation {
 
     public void setExternalListener(IColorChangeAnimationListener colorChangeAnimationListener) {
         this.colorChangeAnimationListener = colorChangeAnimationListener;
+    }
+
+    public void setDelayTime(long aDelayTime) {
+        animStartDelay = aDelayTime;
     }
 }

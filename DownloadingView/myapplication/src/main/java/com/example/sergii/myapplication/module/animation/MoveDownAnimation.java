@@ -74,4 +74,8 @@ public class MoveDownAnimation extends DownloadAnimation {
     public IArrowHideAnimationListener getArrowHideAnimationListener() {
         return arrowHideAnimationListener;
     }
+
+    public long getAnimationDuration() {
+        return ANIMATION_DURATION;
+    }
 }
