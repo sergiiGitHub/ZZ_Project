@@ -16,7 +16,7 @@ import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IVi
 public class Background extends View implements IBackground,
         IViewFiniteAnimationListener,
         IViewProgressAnimationListener
-         {
+{
 
     private static final float INITIAL_ANGLE = -90;
     private static final float BORDER_COEF = 1.2f;
@@ -156,6 +156,10 @@ public class Background extends View implements IBackground,
     }
 
 
+    @Override
+    public void setDrawRing(boolean isDrawRing) {
+        isDrawingRing = isDrawRing;
+    }
 
 }
 

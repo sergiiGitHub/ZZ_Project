@@ -34,6 +34,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
         secondRingAnimation.setExternalListener(this);
 
         spiralAnimation = new SpiralRotation();
+        spiralAnimation.setSpiralAnimationListener(this);
     }
 
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
@@ -42,6 +43,10 @@ public class AnimationController implements IUploadingAnimationController, Uploa
 
     public void setSecondRingView(IViewProgressAnimationListener aView) {
         secondRingAnimation.setView(aView);
+    }
+
+    public void setSpiralView(ImageView aView) {
+        spiralAnimation.setView(aView);
     }
 
     @Override
@@ -91,10 +96,17 @@ public class AnimationController implements IUploadingAnimationController, Uploa
 
     @Override
     public void onProgressAnimationFinish() {
-        Log.d(TAG, "onProgressAnimationFinish() called with: ");
-
+        Log.d(TAG, "onProgressAnimationFinish()");
         if ( getExternalUploadAnimationListener() != null ){
             getExternalUploadAnimationListener().onProgressAnimationFinish();
+        }
+    }
+
+    @Override
+    public void onSpiralAnimationFinish() {
+        Log.d(TAG, "onSpiralAnimationFinish()");
+        if ( getExternalUploadAnimationListener() != null ){
+            getExternalUploadAnimationListener().onSpiralAnimationFinish();
         }
     }
 
@@ -106,7 +118,4 @@ public class AnimationController implements IUploadingAnimationController, Uploa
         this.externalUploadAnimationListener = externalUploadAnimationListener;
     }
 
-    public void setSpiralView(ImageView aView) {
-        spiralAnimation.setView( aView );
-    }
 }

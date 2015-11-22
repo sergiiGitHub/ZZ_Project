@@ -62,6 +62,12 @@ public class ProgressRingAnimation extends UploadAnimation {
         this.viewProgressListener = aViewFiniteListener;
     }
 
+    @Override
+    public void start() {
+        viewProgressListener.setDrawRing(true);
+        super.start();
+    }
+
     public float getProgress() {
         return progress;
     }
@@ -89,6 +95,7 @@ public class ProgressRingAnimation extends UploadAnimation {
     @Override
     public void onAnimationEnd(Animator animation) {
         super.onAnimationEnd(animation);
+        viewProgressListener.setDrawRing(false);
         if( !isCancel() &&  getProgressAnimationListener() != null){
             getProgressAnimationListener().onProgressAnimationFinish();
         }

@@ -1,9 +1,7 @@
 package com.example.sergii.uploadinganimation.animation;
 
-import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -14,36 +12,60 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+import com.example.sergii.uploadinganimation.animation.animationlistener.ISpiralAnimationListener;
+
 
 /**
  * Created by sergii on 21.11.15.
  */
-public class SpiralRotation {
+public class SpiralRotation implements Animation.AnimationListener {
 
     private static final long ANIMATION_DURATION = 800;
     private static final String TAG = SpiralRotation.class.getSimpleName();
+
     private AnimationSet animSet;
+    private ISpiralAnimationListener spiralAnimationListener;
     private ImageView view;
-    private TranslateAnimation translateAnimation;
-    private RotateAnimation rotateAnimation;
+    private boolean isCancel;
 
     public SpiralRotation(  ){
-        createAnimation();
+        initAnimationSet();
     }
 
-    private void createAnimation() {
+    private void initAnimationSet() {
 
-        animSet = new AnimationSet(true);
-        AccelerateInterpolator accelerate = new AccelerateInterpolator();
-        translateAnimation = new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT, -0.9f, Animation.RELATIVE_TO_PARENT, .0f,
-                        Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_PARENT, .0f
-                );
-        translateAnimation.setInterpolator(accelerate);
-        translateAnimation.setDuration(ANIMATION_DURATION);
-        animSet.addAnimation(translateAnimation);
+        animSet = createAnimationSet();
+        animSet.addAnimation(createPositionAnimation());
+        animSet.addAnimation(createScaleAnimation());
+        animSet.addAnimation(createRotationAnimation());
+        animSet.addAnimation(createAlphaAnimation());
+    }
 
-        ScaleAnimation scale = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
+    private AnimationSet createAnimationSet() {
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.setFillAfter(true);
+        animationSet.setAnimationListener(this);
+        return animationSet;
+    }
+
+    private Animation createAlphaAnimation() {
+        final AlphaAnimation alphaAnimation = new AlphaAnimation(0.f, 1.0f);
+        alphaAnimation.setDuration(ANIMATION_DURATION);
+        return alphaAnimation;
+    }
+
+    private Animation createRotationAnimation() {
+
+        final RotateAnimation rotateAnimation = new RotateAnimation(-270, 0f,
+                Animation.RELATIVE_TO_SELF, .65f,
+                Animation.RELATIVE_TO_SELF, .65f);
+        rotateAnimation.setDuration(ANIMATION_DURATION);
+        rotateAnimation.setInterpolator(new DecelerateInterpolator(2));
+        return rotateAnimation;
+    }
+
+    private Animation createScaleAnimation() {
+        final ScaleAnimation scale = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
         float durationCoef = .6f;
@@ -51,21 +73,17 @@ public class SpiralRotation {
         scale.setDuration((long) (ANIMATION_DURATION * durationCoef));
         scale.setStartOffset((long) (ANIMATION_DURATION * delayCoef));
         scale.setInterpolator(new AccelerateInterpolator(8));
-        animSet.addAnimation(scale);
+        return scale;
+    }
 
-        rotateAnimation = new RotateAnimation(-270, 0f,
-                Animation.RELATIVE_TO_SELF, .65f,
-                Animation.RELATIVE_TO_SELF, .65f);
-        rotateAnimation.setDuration(ANIMATION_DURATION);
-        rotateAnimation.setInterpolator(new DecelerateInterpolator(2));
-        animSet.addAnimation(rotateAnimation);
-
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0.f, 1.0f);
-        alphaAnimation.setDuration(ANIMATION_DURATION);
-        animSet.addAnimation(alphaAnimation);
-
-        animSet.setFillAfter(true);
-
+    private Animation createPositionAnimation() {
+        final TranslateAnimation translateAnimation = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, -0.9f, Animation.RELATIVE_TO_PARENT, .0f,
+                Animation.RELATIVE_TO_PARENT, -0.5f, Animation.RELATIVE_TO_PARENT, .0f
+        );
+        translateAnimation.setInterpolator(new AccelerateInterpolator());
+        translateAnimation.setDuration(ANIMATION_DURATION);
+        return translateAnimation;
     }
 
     public void setView(ImageView aView) {
@@ -73,11 +91,12 @@ public class SpiralRotation {
     }
 
     public void cancel() {
-        Log.d(TAG, "cancel() called with: " + "");
+        Log.d(TAG, "cancel() called with: ");
+        setIsCancel(true);
         if ( view != null ){
             view.setVisibility(View.INVISIBLE);
+            view.clearAnimation();
         }
-        animSet.cancel();
 
     }
 
@@ -85,11 +104,45 @@ public class SpiralRotation {
         if ( view == null ){
             return;
         }
+        setIsCancel( false );
         view.setVisibility(View.VISIBLE);
         view.startAnimation(animSet);
     }
 
+    private void setIsCancel(boolean aIsCancel) {
+        isCancel = aIsCancel;
+    }
+
     public void resetView() {
-        
+        cancel();
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        if( !isCancel() && getSpiralAnimationListener() != null ){
+            getSpiralAnimationListener().onSpiralAnimationFinish();
+        }
+    }
+
+    private boolean isCancel() {
+        return isCancel;
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
+
+    public ISpiralAnimationListener getSpiralAnimationListener() {
+        return spiralAnimationListener;
+    }
+
+    public void setSpiralAnimationListener(ISpiralAnimationListener spiralAnimationListener) {
+        this.spiralAnimationListener = spiralAnimationListener;
     }
 }

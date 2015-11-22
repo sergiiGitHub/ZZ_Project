@@ -9,4 +9,6 @@ public interface IViewProgressAnimationListener extends IViewAnimationListener {
     void setSweepAngleProgressValue(float sweepAngle);
 
     float getProgressCurrentAngle();
+
+    void setDrawRing(boolean isDrawRing);
 }
