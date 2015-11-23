@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
+import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewOpacityChangeAnimationListener;
 import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewFiniteAnimationListener;
 import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewProgressAnimationListener;
 
@@ -15,7 +17,8 @@ import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IVi
  */
 public class Background extends View implements IBackground,
         IViewFiniteAnimationListener,
-        IViewProgressAnimationListener
+        IViewProgressAnimationListener,
+        IViewOpacityChangeAnimationListener
 {
 
     private static final float INITIAL_ANGLE = -90;
@@ -70,8 +73,9 @@ public class Background extends View implements IBackground,
         canvas.drawCircle(centerX, centerY, radiusCircle, drawPaintCircle);
         if( isDrawingRing ) {
             canvas.drawArc(rectRingBound, INITIAL_ANGLE, finiteSweepAngle, false, drawPaintFirstRing);
-            canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
         }
+        canvas.drawArc(rectRingBound, progressActualAngle, progressSweepAngle, false, drawPaintSecondRing);
+
     }
 
     @Override
@@ -161,6 +165,10 @@ public class Background extends View implements IBackground,
         isDrawingRing = isDrawRing;
     }
 
+    @Override
+    public void setOpacity(int aOpacity) {
+        drawPaintSecondRing.setAlpha(aOpacity);
+    }
 }
 
 

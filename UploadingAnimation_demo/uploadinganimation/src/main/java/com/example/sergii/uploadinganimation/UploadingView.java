@@ -52,6 +52,7 @@ public class UploadingView extends RelativeLayout{
         addView(background);
         animationController.setFirstRingView(background);
         animationController.setSecondRingView(background);
+        animationController.setOpacityChangeColor(background);
 
         uploadImageView = createIconView( typedArray );
         uploadImageView.setVisibility(INVISIBLE);

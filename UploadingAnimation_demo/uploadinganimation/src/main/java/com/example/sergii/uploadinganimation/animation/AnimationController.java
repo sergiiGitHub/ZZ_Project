@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.sergii.uploadinganimation.animation.animationlistener.UploadAnimationListener;
+import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewOpacityChangeAnimationListener;
 import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewFiniteAnimationListener;
 import com.example.sergii.uploadinganimation.animation.viewanimationlistener.IViewProgressAnimationListener;
 
@@ -21,6 +22,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
     private UploadAnimationListener externalUploadAnimationListener;
     private SpiralRotation spiralAnimation;
 
+    private OpacityAnimation opacityAnimation;
 
     public AnimationController(){
         initAnimation();
@@ -35,6 +37,8 @@ public class AnimationController implements IUploadingAnimationController, Uploa
 
         spiralAnimation = new SpiralRotation();
         spiralAnimation.setSpiralAnimationListener(this);
+
+        opacityAnimation = new OpacityAnimation();
     }
 
     public void setFirstRingView(IViewFiniteAnimationListener aView) {
@@ -49,11 +53,16 @@ public class AnimationController implements IUploadingAnimationController, Uploa
         spiralAnimation.setView(aView);
     }
 
+    public void setOpacityChangeColor(IViewOpacityChangeAnimationListener aView) {
+        opacityAnimation.setView(aView);
+    }
+
     @Override
     public void cancel() {
         firstRingAnimation.cancel();
         secondRingAnimation.cancel();
         spiralAnimation.cancel();
+        opacityAnimation.cancel();
     }
 
     @Override
@@ -70,6 +79,7 @@ public class AnimationController implements IUploadingAnimationController, Uploa
         firstRingAnimation.resetView();
         secondRingAnimation.resetView();
         spiralAnimation.resetView();
+        opacityAnimation.resetView();
     }
 
     @Override
@@ -92,11 +102,15 @@ public class AnimationController implements IUploadingAnimationController, Uploa
             secondRingAnimation.cancel();
         }
 
+        if ( opacityAnimation.isAnimationFinish() ){
+            opacityAnimation.cancel();
+        }
     }
 
     @Override
     public void onProgressAnimationFinish() {
         Log.d(TAG, "onProgressAnimationFinish()");
+        opacityAnimation.start();
         if ( getExternalUploadAnimationListener() != null ){
             getExternalUploadAnimationListener().onProgressAnimationFinish();
         }
@@ -117,5 +131,4 @@ public class AnimationController implements IUploadingAnimationController, Uploa
     public void setExternalUploadAnimationListener(UploadAnimationListener externalUploadAnimationListener) {
         this.externalUploadAnimationListener = externalUploadAnimationListener;
     }
-
 }
